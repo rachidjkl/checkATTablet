@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/cep.CEPNET0.000/Documents/GitHub/checkATTablet/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/cep.CEPNET0.000/Documents/GitHub/checkATTablet/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/cep.CEPNET0.000/Documents/GitHub/checkATTablet/app/src/main/res/layout/fragment_blank.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/cep.CEPNET0.000/Documents/GitHub/checkATTablet/app/src/main/res/layout/fragment_pasar_lista.xml" value="0.33" />
       </map>
     </option>
   </component>
