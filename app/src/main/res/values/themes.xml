@@ -87,5 +87,23 @@
         <item name="android:paddingRight">55dp</item>
     </style>
 
+    <style name="estiloBotonLogin">
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_width">260dp</item>
+        <item name="android:layout_height">70dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/gothic</item>
+        <item name="android:background">@drawable/btn_principal</item>
+    </style>
+
+    <style name="estiloEditText">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_width">400dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/gothic</item>
+        <item name="android:background">@drawable/btn_secundario</item>
+    </style>
 
 </resources>
