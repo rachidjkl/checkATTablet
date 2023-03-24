@@ -2,4 +2,11 @@
     <string name="app_name">checkATTablet</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="spinner_options">
+        <item>M03 - Base de datos</item>
+        <item>M04 - Lenguaje de marcas</item>
+        <item>M05 - Acceso a datos</item>
+        <item>M06 - Empresa</item>
+    </string-array>
 </resources>

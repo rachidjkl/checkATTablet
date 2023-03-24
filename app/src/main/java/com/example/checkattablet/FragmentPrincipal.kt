@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 
 
-class FragmentPasarLista : Fragment() {
+class FragmentPrincipal : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -16,12 +16,13 @@ class FragmentPasarLista : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflar el layout del fragmento
-        return inflater.inflate(R.layout.fragment_pasar_lista, container, false)
+        return inflater.inflate(R.layout.fragment_principal, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Aquí puedes agregar código para inicializar tus vistas o elementos
         // Por ejemplo, si tienes un botón en el layout, puedes hacer lo siguiente:
+
     }
 }
