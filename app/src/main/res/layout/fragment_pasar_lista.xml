@@ -59,24 +59,22 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
-            android:layout_width="600dp"
-            android:layout_height="592dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/white"
+            android:layout_width="667dp"
+            android:layout_height="482dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.105"
+            app:layout_constraintEnd_toStartOf="@+id/constraintLayout5"
+            app:layout_constraintHorizontal_bias="0.279"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="1.0" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout5"
             android:layout_width="320dp"
             android:layout_height="609dp"
-            android:layout_marginStart="52dp"
             android:background="@color/grisPanel"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/recyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/texto2"
             app:layout_constraintVertical_bias="0.712">
 
@@ -97,7 +95,7 @@
                 app:layout_constraintTop_toTopOf="@+id/textView5" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/textViewHorasSeleccionadas"
                 style="@style/estiloTexto"
                 android:layout_marginTop="20dp"
                 android:text="Hora : 8:00 - 9:00"
@@ -117,7 +115,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.36"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView6"
+                app:layout_constraintTop_toBottomOf="@+id/textViewHorasSeleccionadas"
                 app:layout_constraintVertical_bias="0.228">
 
                 <RadioButton

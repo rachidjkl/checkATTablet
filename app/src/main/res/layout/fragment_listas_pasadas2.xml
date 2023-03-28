@@ -13,7 +13,7 @@
 
 
         <Button
-            android:id="@+id/button5"
+            android:id="@+id/btnVolver"
             style="@style/estiloBotonSecundario"
             android:text="Volver"
             app:backgroundTint="@null"
@@ -32,7 +32,7 @@
             app:layout_constraintEnd_toStartOf="@+id/constraintLayout4"
             app:layout_constraintHorizontal_bias="0.039"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button5"
+            app:layout_constraintTop_toBottomOf="@+id/btnVolver"
             app:layout_constraintVertical_bias="0.423" />
 
         <TextView
@@ -43,7 +43,7 @@
             app:layout_constraintEnd_toStartOf="@+id/constraintLayout4"
             app:layout_constraintHorizontal_bias="0.039"
             app:layout_constraintStart_toEndOf="@+id/textView10"
-            app:layout_constraintTop_toBottomOf="@+id/button5"
+            app:layout_constraintTop_toBottomOf="@+id/btnVolver"
             app:layout_constraintVertical_bias="0.423" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -52,8 +52,8 @@
             android:layout_height="516dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/constraintLayout4"
-            app:layout_constraintHorizontal_bias="0.141"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.052"
+            app:layout_constraintStart_toStartOf="@+id/textView10"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
 
@@ -75,6 +75,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/fechaActual2"
                 style="@style/estiloTexto"
                 android:layout_marginStart="20dp"
                 android:text="24/03/2023"
@@ -82,7 +83,7 @@
                 app:layout_constraintTop_toTopOf="@+id/textView5" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/textViewHorasSeleccionadas"
                 style="@style/estiloTexto"
                 android:layout_marginTop="20dp"
                 android:text="Hora : 8:00 - 9:00"
@@ -102,7 +103,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.36"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView6"
+                app:layout_constraintTop_toBottomOf="@+id/textViewHorasSeleccionadas"
                 app:layout_constraintVertical_bias="0.228">
 
                 <RadioButton

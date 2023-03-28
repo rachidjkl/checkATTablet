@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 
 class FragmentPasarLista : Fragment() {
@@ -21,7 +23,36 @@ class FragmentPasarLista : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Aquí puedes agregar código para inicializar tus vistas o elementos
-        // Por ejemplo, si tienes un botón en el layout, puedes hacer lo siguiente:
+
+        val listaAlumno = mutableListOf<ListaAlumnos>(
+            ListaAlumnos(1, "Marc Alzamora Lazaro", "P"),
+            ListaAlumnos(2, "Mario Leiva Torres", "P"),
+            ListaAlumnos(3, "Joel Marcos Cano", "R"),
+            ListaAlumnos(4, "Rachid Ghenem Arias", "FI"),
+            ListaAlumnos(5, "Joaquin Custodio Valderas", "FJ"),
+            ListaAlumnos(6, "Raul Lendines Ramos", "Irse antes de acabar"),
+            ListaAlumnos(7, "Marc Alzamora Lazaro", "P"),
+            ListaAlumnos(8, "Mario Leiva Torres", "P"),
+            ListaAlumnos(9, "Joel Marcos Cano", "R"),
+            ListaAlumnos(10, "Rachid Ghenem Arias", "FI"),
+            ListaAlumnos(11, "Joaquin Custodio Valderas", "FJ"),
+            ListaAlumnos(12, "Raul Lendines Ramos", "Irse antes de acabar"),
+        )
+
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+
+        val adapter = ListaAlumnosAdaptador(requireContext(), listaAlumno)
+        recyclerView.hasFixedSize()
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = adapter
+
+        adapter.setOnClickListener {
+            // Update the selected item and refresh the view
+            val grupo = listaAlumno[recyclerView.getChildAdapterPosition(it)]
+            adapter.selectedItem = grupo
+            adapter.notifyDataSetChanged()
+
+            // ...
+        }
     }
 }

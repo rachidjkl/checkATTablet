@@ -6,11 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.w3c.dom.Text
+import java.util.*
 
 
 class FragmentListasPasadas2 : Fragment() {
@@ -29,10 +31,23 @@ class FragmentListasPasadas2 : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val fechaActual2 = view.findViewById<TextView>(R.id.fechaActual2)
+        val cal = Calendar.getInstance()
+        fechaActual2.text = "${cal.get(Calendar.DAY_OF_MONTH)}/${cal.get(Calendar.MONTH) + 1}/${cal.get(Calendar.YEAR)}"
+
         val grupo = arguments?.getSerializable("listaGrupo") as? ListaGrupo
         var nombreProfe = view.findViewById<TextView>(R.id.nombreProfesor)
         nombreProfe.text = grupo?.profe
 
+        val textViewHorasSeleccionadas = view.findViewById<TextView>(R.id.textViewHorasSeleccionadas)
+        textViewHorasSeleccionadas.text = "Hora : " + grupo?.horaInicio + " - " + grupo?.horaFinal
+
+        val btnVolver = view.findViewById<Button>(R.id.btnVolver)
+
+        btnVolver.setOnClickListener{
+            val fragmentManager = requireActivity().supportFragmentManager
+            fragmentManager.popBackStack()
+        }
 
         val listaAlumno = mutableListOf<ListaAlumnos>(
             ListaAlumnos(1, "Marc Alzamora Lazaro", "P"),
@@ -61,8 +76,6 @@ class FragmentListasPasadas2 : Fragment() {
             val grupo = listaAlumno[recyclerView.getChildAdapterPosition(it)]
             adapter.selectedItem = grupo
             adapter.notifyDataSetChanged()
-
-            // ...
         }
 
     }

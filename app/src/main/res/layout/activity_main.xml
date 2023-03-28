@@ -204,7 +204,7 @@
                 <TextView
                     android:id="@+id/textViewAjustes"
                     style="@style/texto_apartados"
-                    android:text="Pasar lista"
+                    android:text="Ajustes"
                     android:layout_marginLeft="13dp"
                     app:layout_constraintBottom_toBottomOf="@+id/imagenAjustes"
                     app:layout_constraintEnd_toEndOf="parent"

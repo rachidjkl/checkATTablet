@@ -5,7 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 
 
 class FragmentAjustes : Fragment() {
@@ -21,8 +24,30 @@ class FragmentAjustes : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Aquí puedes agregar código para inicializar tus vistas o elementos
-        // Por ejemplo, si tienes un botón en el layout, puedes hacer lo siguiente:
+
+        val btnEspanol = view.findViewById<Button>(R.id.btnEspanol)
+        val btnCatalan = view.findViewById<Button>(R.id.btnCatalan)
+        val btnIngles = view.findViewById<Button>(R.id.btnIngles)
+
+        btnEspanol.setOnClickListener {
+            btnEspanol.setBackgroundResource(R.drawable.btn_seleccionado)
+            btnCatalan.setBackgroundResource(R.drawable.btn_adicional)
+            btnIngles.setBackgroundResource(R.drawable.btn_adicional)
+        }
+        btnCatalan.setOnClickListener {
+            btnEspanol.setBackgroundResource(R.drawable.btn_adicional)
+            btnCatalan.setBackgroundResource(R.drawable.btn_seleccionado)
+            btnIngles.setBackgroundResource(R.drawable.btn_adicional)
+        }
+        btnIngles.setOnClickListener {
+            btnEspanol.setBackgroundResource(R.drawable.btn_adicional)
+            btnCatalan.setBackgroundResource(R.drawable.btn_adicional)
+            btnIngles.setBackgroundResource(R.drawable.btn_seleccionado)
+        }
+
+
 
     }
+
+
 }
