@@ -37,6 +37,14 @@
         <item name="android:fontFamily">@font/gothic</item>
     </style>
 
+    <style name="estiloTextoConFondo">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/gothic</item>
+    </style>
+
     <style name="estiloDesplebabes">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">14sp</item>
@@ -78,7 +86,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@font/gothic</item>
-        <item name="android:background">@drawable/btn_secundario</item>
+        <item name="android:background">@drawable/btn_adicional</item>
         <item name="android:paddingTop">35dp</item>
         <item name="android:paddingBottom">35dp</item>
         <item name="android:paddingLeft">55dp</item>

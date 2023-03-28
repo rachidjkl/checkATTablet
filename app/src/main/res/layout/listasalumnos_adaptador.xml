@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:background="@drawable/bordes_redondos"
-    android:layout_marginBottom="15dp">
+    android:layout_marginBottom="15dp"
+    android:id="@+id/layoutAlumnos">
 
     <TextView
-        android:id="@+id/idHora"
+        android:id="@+id/idNombreAlumno"
         style="@style/estiloTexto"
-        android:text="8:40-9:40"
+        android:text="Mario Leiva Torres"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,39 +20,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.508" />
 
-    <TextView
-        android:id="@+id/idModulo"
-        style="@style/estiloTexto"
-        android:textStyle="bold"
-        android:text="M04-UF2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.381"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.508" />
 
     <TextView
-        android:id="@+id/idProfesor"
-        style="@style/estiloTexto"
-        android:text="Paz Rueda"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.641"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.508" />
-
-    <TextView
-        android:id="@+id/idEstado"
+        android:id="@+id/idAsistencia"
         style="@style/estiloTextoConFondo"
-        android:gravity="center"
         android:background="@drawable/fondo_rojo"
-        android:text="pasada"
+        android:gravity="center"
+        android:text="P"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.851"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/idNombreAlumno"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.508" />
 

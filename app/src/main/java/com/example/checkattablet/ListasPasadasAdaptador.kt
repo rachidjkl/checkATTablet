@@ -1,79 +1,94 @@
 package com.example.checkattablet
 
+import android.content.Context
+import android.content.Intent
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.Drawable
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.cardview.widget.CardView
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class ListasPasadasAdaptador (private val listaGrupo: MutableList<ListaGrupo>): View.OnClickListener {
+class ListasPasadasAdaptador (private val context: Context,
+                         private val listaGrupos: MutableList<ListaGrupo>):
+    RecyclerView.Adapter<ListasPasadasAdaptador.GruposViewHolder>(),
+    View.OnClickListener, View.OnLongClickListener{
 
     private val layout = R.layout.listaspasadas_adaptador
     private var clickListener: View.OnClickListener? = null
-
-    class listasPasadasHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var moduloName  : TextView
-        var profeName   : TextView
-        var hora        : TextView
-        var estado      : TextView
+    private var clickLongListener: View.OnLongClickListener? = null
 
 
-        init {
-            moduloName  = view.findViewById(R.id.idModulo)
-            profeName   = view.findViewById(R.id.idProfesor)
-            hora        = view.findViewById(R.id.idHora)
-            estado      = view.findViewById(R.id.idEstado)
+    class GruposViewHolder(val view: View):
+        RecyclerView.ViewHolder(view){
+
+        var horaClase      : TextView
+        var idModulo       : TextView
+        var nombreProfe    : TextView
+        var estadoLista    : TextView
+
+        init{
+            horaClase      = view.findViewById(R.id.idHora)
+            idModulo       = view.findViewById(R.id.idModulo)
+            nombreProfe    = view.findViewById(R.id.idProfesor)
+            estadoLista    = view.findViewById(R.id.idEstado)
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): listasPasadasHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GruposViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
         view.setOnClickListener(this)
-        return listasPasadasHolder(view)
+        view.setOnLongClickListener(this)
+        return GruposViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: listasPasadasHolder, position: Int) {
-        val grupo = listaGrupo[position]
-        bindPackage(holder, grupo)
+    override fun getItemCount() = listaGrupos.size
+
+    override fun onBindViewHolder(holder: GruposViewHolder, position: Int) {
+        val paquete = listaGrupos[position]
+        bindPaquete(holder, paquete)
     }
 
-    fun bindPackage(holder: listasPasadasHolder, grupo: ListaGrupo) {
-        holder.hora?.text = grupo.horaInicio + "-" + grupo.horaFinal
-        holder.moduloName?.text = grupo.modulo
-        holder.profeName?.text = grupo.profe
-        when(grupo.estado){
+    fun bindPaquete(holder: GruposViewHolder, listaGrupos: ListaGrupo) {
+
+        holder.horaClase?.text      = listaGrupos.horaInicio + "-" + listaGrupos.horaFinal
+        holder.idModulo?.text       = listaGrupos.modulo + "-" + listaGrupos.uf
+        holder.nombreProfe?.text    = listaGrupos.profe
+        when(listaGrupos.estado) {
             true -> {
-                holder.estado?.text = "Pasada"
+                holder.estadoLista?.text = "Validada"
+                holder.estadoLista?.setBackgroundResource(R.drawable.fondo_verde)
             }
             false -> {
-                holder.estado?.text = "No Pasada"
+                holder.estadoLista?.text = "No Validada"
+                holder.estadoLista?.setBackgroundResource(R.drawable.fondo_rojo)
             }
         }
     }
 
-    // Devolver el tamaño de tu dataset (invocado por el layout manager)
-    override fun getItemCount(): Int{
-        return listaGrupo.size
-    }
 
     override fun onClick(view: View?) {
         clickListener?.onClick(view)
     }
 
-    fun setOnClickListener(listener: View.OnClickListener) {
+    fun setOnClickListener(listener: View.OnClickListener){
         clickListener = listener
     }
 
+    override fun onLongClick(view: View?): Boolean {
+        clickLongListener?.onLongClick(view)
+        return true
+    }
 
-
-
-
-
-
-
-
+    fun setOnLongClickListener(listener: View.OnLongClickListener){
+        clickLongListener = listener
+    }
 
 }

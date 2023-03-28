@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grisClaro"
+    tools:context=".FragmentListasPasadas2">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <Button
+            android:id="@+id/button5"
+            style="@style/estiloBotonSecundario"
+            android:text="Volver"
+            app:backgroundTint="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.028"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.034" />
+
+        <TextView
+            android:id="@+id/textView10"
+            style="@style/estiloTexto"
+            android:text="Ha pasado lista:"
+            app:layout_constraintBottom_toTopOf="@+id/recyclerViewListasPasadas2"
+            app:layout_constraintEnd_toStartOf="@+id/constraintLayout4"
+            app:layout_constraintHorizontal_bias="0.039"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button5"
+            app:layout_constraintVertical_bias="0.423" />
+
+        <TextView
+            android:id="@+id/nombreProfesor"
+            style="@style/estiloTexto"
+            android:text="Paz Rueda"
+            app:layout_constraintBottom_toTopOf="@+id/recyclerViewListasPasadas2"
+            app:layout_constraintEnd_toStartOf="@+id/constraintLayout4"
+            app:layout_constraintHorizontal_bias="0.039"
+            app:layout_constraintStart_toEndOf="@+id/textView10"
+            app:layout_constraintTop_toBottomOf="@+id/button5"
+            app:layout_constraintVertical_bias="0.423" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewListasPasadas2"
+            android:layout_width="678dp"
+            android:layout_height="516dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/constraintLayout4"
+            app:layout_constraintHorizontal_bias="0.141"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout4"
+            android:layout_width="320dp"
+            android:layout_height="609dp"
+            android:background="@color/grisPanel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/textView5"
+                style="@style/estiloTexto"
+                android:layout_marginStart="52dp"
+                android:layout_marginTop="28dp"
+                android:text="Fecha Actual"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                style="@style/estiloTexto"
+                android:layout_marginStart="20dp"
+                android:text="24/03/2023"
+                app:layout_constraintStart_toEndOf="@+id/textView5"
+                app:layout_constraintTop_toTopOf="@+id/textView5" />
+
+            <TextView
+                android:id="@+id/textView6"
+                style="@style/estiloTexto"
+                android:layout_marginTop="20dp"
+                android:text="Hora : 8:00 - 9:00"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.253"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.36"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView6"
+                app:layout_constraintVertical_bias="0.228">
+
+                <RadioButton
+                    android:id="@+id/radioButton1"
+                    style="@style/estiloTexto"
+                    android:layout_marginBottom="30dp"
+                    android:buttonTint="@color/black"
+                    android:text="Presente" />
+
+                <RadioButton
+                    android:id="@+id/radioButton2"
+                    style="@style/estiloTexto"
+                    android:layout_marginBottom="30dp"
+                    android:buttonTint="@color/black"
+                    android:text="Retraso" />
+
+                <RadioButton
+                    android:id="@+id/radioButton3"
+                    style="@style/estiloTexto"
+                    android:layout_marginBottom="30dp"
+                    android:buttonTint="@color/black"
+                    android:text="Falta Justificada" />
+
+                <RadioButton
+                    android:id="@+id/radioButton4"
+                    style="@style/estiloTexto"
+                    android:layout_marginBottom="30dp"
+                    android:buttonTint="@color/black"
+                    android:text="Falta Injustificada" />
+
+                <RadioButton
+                    android:id="@+id/radioButton5"
+                    style="@style/estiloTexto"
+                    android:buttonTint="@color/black"
+                    android:text="Irse antes de acabar" />
+
+
+            </RadioGroup>
+
+            <Button
+                style="@style/estiloBotonPrincipal"
+                android:text="VALIDAR >>"
+                app:backgroundTint="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.931"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+                app:layout_constraintVertical_bias="0.872" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</FrameLayout>
