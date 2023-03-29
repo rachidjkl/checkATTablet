@@ -23,6 +23,7 @@ class ListaAlumnosAdaptador (private val context: Context,
     RecyclerView.Adapter<ListaAlumnosAdaptador.AlumnosViewHolder>(),
     View.OnClickListener, View.OnLongClickListener{
 
+
     internal var selectedItem: ListaAlumnos? = null
     private val layout = R.layout.listasalumnos_adaptador
     private var clickListener: View.OnClickListener? = null
@@ -60,6 +61,8 @@ class ListaAlumnosAdaptador (private val context: Context,
             ContextCompat.getDrawable(context, R.drawable.bordes_redondos)
         }
         holder.itemView.background = backgroundDrawable
+
+
         bindPaquete(holder, paquete)
     }
 
@@ -67,6 +70,7 @@ class ListaAlumnosAdaptador (private val context: Context,
 
         holder.nombreAlumno?.text = listaAlumnos.nombreAlumno
         holder.asistenca?.text = listaAlumnos.asistencia
+
         when(listaAlumnos.asistencia) {
             "P" -> {
                 holder.asistenca?.setBackgroundResource(R.drawable.fondo_verde)

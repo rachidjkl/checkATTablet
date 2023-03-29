@@ -88,6 +88,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/textopuerba"
                 style="@style/estiloTexto"
                 android:layout_marginStart="20dp"
                 android:text="24/03/2023"

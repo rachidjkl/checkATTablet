@@ -29,7 +29,11 @@ class FragmentPasarLista : Fragment() {
 
 
         val radioGroup = view.findViewById<RadioGroup>(R.id.myRadioGroup)
-        val selectedRadioButton = view.findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
+
+
+
+
+
 
         val listaAlumno = mutableListOf<ListaAlumnos>(
             ListaAlumnos(1, "Marc Alzamora Lazaro", "P"),
@@ -55,20 +59,34 @@ class FragmentPasarLista : Fragment() {
 
         adapter.setOnClickListener {
             // Update the selected item and refresh the view
-            var grupo = listaAlumno[recyclerView.getChildAdapterPosition(it)]
+            val grupo = listaAlumno[recyclerView.getChildAdapterPosition(it)]
             adapter.selectedItem = grupo
             adapter.notifyDataSetChanged()
 
             // ...
         }
 
-        radioGroup.setOnClickListener{
-            if (grupo!=null){
+        radioGroup.setOnCheckedChangeListener { group, checkedId ->
+            val radioButton = view.findViewById<RadioButton>(checkedId)
+            /*when(radioButton.text.toString()) {
+                "Presente" -> {
+                    adapter.selectedRadioButtonText = "P"
+                }
+                "Retraso" -> {
+                    adapter.selectedRadioButtonText = "R"
+                }
+                "Falta Justificada" -> {
+                    adapter.selectedRadioButtonText = "FJ"
+                }
+                "Falta Injustificada" -> {
+                    adapter.selectedRadioButtonText = "FI"
+                }
+                "Irse antes de acabar" -> {
+                    adapter.selectedRadioButtonText = "Irse antes de acabar"
+                }
+            }*/
 
-            }
-            else{
-
-            }
+            //adapter.notifyDataSetChanged()
         }
 
 
