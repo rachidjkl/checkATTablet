@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +25,11 @@ class FragmentPasarLista : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+
+        val radioGroup = view.findViewById<RadioGroup>(R.id.myRadioGroup)
+        val selectedRadioButton = view.findViewById<RadioButton>(radioGroup.checkedRadioButtonId)
 
         val listaAlumno = mutableListOf<ListaAlumnos>(
             ListaAlumnos(1, "Marc Alzamora Lazaro", "P"),
@@ -48,11 +55,22 @@ class FragmentPasarLista : Fragment() {
 
         adapter.setOnClickListener {
             // Update the selected item and refresh the view
-            val grupo = listaAlumno[recyclerView.getChildAdapterPosition(it)]
+            var grupo = listaAlumno[recyclerView.getChildAdapterPosition(it)]
             adapter.selectedItem = grupo
             adapter.notifyDataSetChanged()
 
             // ...
         }
+
+        radioGroup.setOnClickListener{
+            if (grupo!=null){
+
+            }
+            else{
+
+            }
+        }
+
+
     }
 }
