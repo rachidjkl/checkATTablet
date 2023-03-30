@@ -28,12 +28,7 @@ class FragmentPasarLista : Fragment() {
 
 
 
-        val radioGroup = view.findViewById<RadioGroup>(R.id.myRadioGroup)
-
-
-
-
-
+        val radioGroup              = view.findViewById<RadioGroup>(R.id.myRadioGroup)
 
         val listaAlumno = mutableListOf<ListaAlumnos>(
             ListaAlumnos(1, "Marc Alzamora Lazaro", "P"),
@@ -59,16 +54,33 @@ class FragmentPasarLista : Fragment() {
 
         adapter.setOnClickListener {
             // Update the selected item and refresh the view
-            val grupo = listaAlumno[recyclerView.getChildAdapterPosition(it)]
-            adapter.selectedItem = grupo
+            val alumnoSeleccionado = listaAlumno[recyclerView.getChildAdapterPosition(it)]
+            adapter.selectedItem = alumnoSeleccionado
             adapter.notifyDataSetChanged()
+            when(alumnoSeleccionado.asistencia){
+                "P" -> {
+                    radioGroup.check(R.id.radioButtonPresente)
+                }
+                "R" -> {
+                    radioGroup.check(R.id.radioButtonRetraso)
+                }
+                "FI" -> {
+                    radioGroup.check(R.id.radioButtonFaltaI)
+                }
+                "FJ" -> {
+                    radioGroup.check(R.id.radioButtonFaltaJ)
+                }
+                "Irse antes de acabar" -> {
+                    radioGroup.check(R.id.radioButtonIrseAntes)
+                }
+            }
 
             // ...
         }
 
         radioGroup.setOnCheckedChangeListener { group, checkedId ->
             val radioButton = view.findViewById<RadioButton>(checkedId)
-            /*when(radioButton.text.toString()) {
+            when(radioButton.text.toString()) {
                 "Presente" -> {
                     adapter.selectedRadioButtonText = "P"
                 }
@@ -84,9 +96,9 @@ class FragmentPasarLista : Fragment() {
                 "Irse antes de acabar" -> {
                     adapter.selectedRadioButtonText = "Irse antes de acabar"
                 }
-            }*/
+            }
 
-            //adapter.notifyDataSetChanged()
+            adapter.notifyDataSetChanged()
         }
 
 

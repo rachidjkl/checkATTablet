@@ -120,35 +120,35 @@
                 app:layout_constraintVertical_bias="0.228">
 
                 <RadioButton
-                    android:id="@+id/radioButton1"
+                    android:id="@+id/radioButtonPresente"
                     style="@style/estiloTexto"
                     android:layout_marginBottom="30dp"
                     android:buttonTint="@color/black"
                     android:text="Presente" />
 
                 <RadioButton
-                    android:id="@+id/radioButton2"
+                    android:id="@+id/radioButtonRetraso"
                     style="@style/estiloTexto"
                     android:layout_marginBottom="30dp"
                     android:buttonTint="@color/black"
                     android:text="Retraso" />
 
                 <RadioButton
-                    android:id="@+id/radioButton3"
+                    android:id="@+id/radioButtonFaltaJ"
                     style="@style/estiloTexto"
                     android:layout_marginBottom="30dp"
                     android:buttonTint="@color/black"
                     android:text="Falta Justificada" />
 
                 <RadioButton
-                    android:id="@+id/radioButton4"
+                    android:id="@+id/radioButtonFaltaI"
                     style="@style/estiloTexto"
                     android:layout_marginBottom="30dp"
                     android:buttonTint="@color/black"
                     android:text="Falta Injustificada" />
 
                 <RadioButton
-                    android:id="@+id/radioButton5"
+                    android:id="@+id/radioButtonIrseAntes"
                     style="@style/estiloTexto"
                     android:buttonTint="@color/black"
                     android:text="Irse antes de acabar" />

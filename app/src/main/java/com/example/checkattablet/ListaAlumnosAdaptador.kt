@@ -23,7 +23,7 @@ class ListaAlumnosAdaptador (private val context: Context,
     RecyclerView.Adapter<ListaAlumnosAdaptador.AlumnosViewHolder>(),
     View.OnClickListener, View.OnLongClickListener{
 
-
+    var selectedRadioButtonText = ""
     internal var selectedItem: ListaAlumnos? = null
     private val layout = R.layout.listasalumnos_adaptador
     private var clickListener: View.OnClickListener? = null
@@ -62,6 +62,10 @@ class ListaAlumnosAdaptador (private val context: Context,
         }
         holder.itemView.background = backgroundDrawable
 
+        if (paquete == selectedItem){
+            holder.asistenca.text = selectedRadioButtonText
+        }
+
 
         bindPaquete(holder, paquete)
     }
@@ -69,7 +73,6 @@ class ListaAlumnosAdaptador (private val context: Context,
     fun bindPaquete(holder: AlumnosViewHolder, listaAlumnos: ListaAlumnos) {
 
         holder.nombreAlumno?.text = listaAlumnos.nombreAlumno
-        holder.asistenca?.text = listaAlumnos.asistencia
 
         when(listaAlumnos.asistencia) {
             "P" -> {
