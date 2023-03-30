@@ -62,9 +62,7 @@ class ListaAlumnosAdaptador (private val context: Context,
         }
         holder.itemView.background = backgroundDrawable
 
-        if (paquete == selectedItem){
-            holder.asistenca.text = selectedRadioButtonText
-        }
+
 
 
         bindPaquete(holder, paquete)
@@ -73,6 +71,7 @@ class ListaAlumnosAdaptador (private val context: Context,
     fun bindPaquete(holder: AlumnosViewHolder, listaAlumnos: ListaAlumnos) {
 
         holder.nombreAlumno?.text = listaAlumnos.nombreAlumno
+        holder.asistenca?.text = listaAlumnos.asistencia
 
         when(listaAlumnos.asistencia) {
             "P" -> {

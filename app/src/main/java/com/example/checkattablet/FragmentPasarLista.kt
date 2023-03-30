@@ -26,9 +26,9 @@ class FragmentPasarLista : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        var alumnoId: ListaAlumnos? = null
 
-
-        val radioGroup              = view.findViewById<RadioGroup>(R.id.myRadioGroup)
+        val radioGroup = view.findViewById<RadioGroup>(R.id.myRadioGroup)
 
         val listaAlumno = mutableListOf<ListaAlumnos>(
             ListaAlumnos(1, "Marc Alzamora Lazaro", "P"),
@@ -55,6 +55,7 @@ class FragmentPasarLista : Fragment() {
         adapter.setOnClickListener {
             // Update the selected item and refresh the view
             val alumnoSeleccionado = listaAlumno[recyclerView.getChildAdapterPosition(it)]
+            alumnoId = listaAlumno.find { ListaAlumnos -> ListaAlumnos.idAlumno.equals(alumnoSeleccionado.idAlumno) }
             adapter.selectedItem = alumnoSeleccionado
             adapter.notifyDataSetChanged()
             when(alumnoSeleccionado.asistencia){
@@ -82,19 +83,19 @@ class FragmentPasarLista : Fragment() {
             val radioButton = view.findViewById<RadioButton>(checkedId)
             when(radioButton.text.toString()) {
                 "Presente" -> {
-                    adapter.selectedRadioButtonText = "P"
+                    alumnoId?.asistencia = "P"
                 }
                 "Retraso" -> {
-                    adapter.selectedRadioButtonText = "R"
+                    alumnoId?.asistencia = "R"
                 }
                 "Falta Justificada" -> {
-                    adapter.selectedRadioButtonText = "FJ"
+                    alumnoId?.asistencia = "FJ"
                 }
                 "Falta Injustificada" -> {
-                    adapter.selectedRadioButtonText = "FI"
+                    alumnoId?.asistencia = "FI"
                 }
                 "Irse antes de acabar" -> {
-                    adapter.selectedRadioButtonText = "Irse antes de acabar"
+                    alumnoId?.asistencia = "Irse antes de acabar"
                 }
             }
 
