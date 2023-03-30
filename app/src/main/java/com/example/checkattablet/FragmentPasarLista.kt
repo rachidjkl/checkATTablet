@@ -31,7 +31,7 @@ class FragmentPasarLista : Fragment() {
         val radioGroup = view.findViewById<RadioGroup>(R.id.myRadioGroup)
 
         val listaAlumno = mutableListOf<ListaAlumnos>(
-            ListaAlumnos(1, "Marc Alzamora Lazaro", "P"),
+            ListaAlumnos(1, "Marc Alzamora Lazaro", ""),
             ListaAlumnos(2, "Mario Leiva Torres", "P"),
             ListaAlumnos(3, "Joel Marcos Cano", "R"),
             ListaAlumnos(4, "Rachid Ghenem Arias", "FI"),

@@ -89,6 +89,9 @@ class ListaAlumnosAdaptador (private val context: Context,
             "Irse antes de acabar" -> {
                 holder.asistenca?.setBackgroundResource(R.drawable.fondo_amarillo)
             }
+            else -> {
+                holder.asistenca?.setBackgroundResource(R.drawable.bordes_redondos)
+            }
         }
     }
 
