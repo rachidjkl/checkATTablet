@@ -32,17 +32,17 @@ class FragmentPasarLista : Fragment() {
 
         val listaAlumno = mutableListOf<ListaAlumnos>(
             ListaAlumnos(1, "Marc Alzamora Lazaro", ""),
-            ListaAlumnos(2, "Mario Leiva Torres", "P"),
-            ListaAlumnos(3, "Joel Marcos Cano", "R"),
-            ListaAlumnos(4, "Rachid Ghenem Arias", "FI"),
-            ListaAlumnos(5, "Joaquin Custodio Valderas", "FJ"),
-            ListaAlumnos(6, "Raul Lendines Ramos", "Irse antes de acabar"),
-            ListaAlumnos(7, "Marc Alzamora Lazaro", "P"),
-            ListaAlumnos(8, "Mario Leiva Torres", "P"),
-            ListaAlumnos(9, "Joel Marcos Cano", "R"),
-            ListaAlumnos(10, "Rachid Ghenem Arias", "FI"),
-            ListaAlumnos(11, "Joaquin Custodio Valderas", "FJ"),
-            ListaAlumnos(12, "Raul Lendines Ramos", "Irse antes de acabar"),
+            ListaAlumnos(2, "Mario Leiva Torres", ""),
+            ListaAlumnos(3, "Joel Marcos Cano", ""),
+            ListaAlumnos(4, "Rachid Ghenem Arias", ""),
+            ListaAlumnos(5, "Joaquin Custodio Valderas", ""),
+            ListaAlumnos(6, "Raul Lendines Ramos", ""),
+            ListaAlumnos(1, "Marc Alzamora Lazaro", ""),
+            ListaAlumnos(2, "Mario Leiva Torres", ""),
+            ListaAlumnos(3, "Joel Marcos Cano", ""),
+            ListaAlumnos(4, "Rachid Ghenem Arias", ""),
+            ListaAlumnos(5, "Joaquin Custodio Valderas", ""),
+            ListaAlumnos(6, "Raul Lendines Ramos", "")
         )
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
@@ -53,11 +53,11 @@ class FragmentPasarLista : Fragment() {
         recyclerView.adapter = adapter
 
         adapter.setOnClickListener {
+            // Reinicia el indice actual
+            alumnoId = null
             // Update the selected item and refresh the view
             val alumnoSeleccionado = listaAlumno[recyclerView.getChildAdapterPosition(it)]
-            alumnoId = listaAlumno.find { ListaAlumnos -> ListaAlumnos.idAlumno.equals(alumnoSeleccionado.idAlumno) }
-            adapter.selectedItem = alumnoSeleccionado
-            adapter.notifyDataSetChanged()
+
             when(alumnoSeleccionado.asistencia){
                 "P" -> {
                     radioGroup.check(R.id.radioButtonPresente)
@@ -74,33 +74,80 @@ class FragmentPasarLista : Fragment() {
                 "Irse antes de acabar" -> {
                     radioGroup.check(R.id.radioButtonIrseAntes)
                 }
+                else ->{
+                    radioGroup.clearCheck()
+                }
             }
-
-            // ...
+            alumnoId = listaAlumno.find { ListaAlumnos -> ListaAlumnos.idAlumno.equals(alumnoSeleccionado.idAlumno) }
+            adapter.selectedItem = alumnoSeleccionado
+            adapter.notifyDataSetChanged()
         }
+
 
         radioGroup.setOnCheckedChangeListener { group, checkedId ->
             val radioButton = view.findViewById<RadioButton>(checkedId)
-            when(radioButton.text.toString()) {
-                "Presente" -> {
-                    alumnoId?.asistencia = "P"
+            if (radioButton != null) {
+                when(radioButton.text.toString()) {
+                    "Presente" -> {
+                        alumnoId?.asistencia = "P"
+                    }
+                    "Retraso" -> {
+                        alumnoId?.asistencia = "R"
+                    }
+                    "Falta Justificada" -> {
+                        alumnoId?.asistencia = "FJ"
+                    }
+                    "Falta Injustificada" -> {
+                        alumnoId?.asistencia = "FI"
+                    }
+                    "Irse antes de acabar" -> {
+                        alumnoId?.asistencia = "Irse antes de acabar"
+                    }
+                    else ->{
+                        alumnoId?.asistencia = ""
+                    }
                 }
-                "Retraso" -> {
-                    alumnoId?.asistencia = "R"
-                }
-                "Falta Justificada" -> {
-                    alumnoId?.asistencia = "FJ"
-                }
-                "Falta Injustificada" -> {
-                    alumnoId?.asistencia = "FI"
-                }
-                "Irse antes de acabar" -> {
-                    alumnoId?.asistencia = "Irse antes de acabar"
-                }
-            }
 
-            adapter.notifyDataSetChanged()
+
+                // Get the current position and move to the next element
+                val currentPosition = listaAlumno.indexOf(alumnoId)
+                val nextPosition = currentPosition + 1
+                if (nextPosition < listaAlumno.size) {
+                    // Select the next element and update the view
+                    alumnoId = listaAlumno[nextPosition]
+
+
+
+                    // Set the appropriate radio button for the next element's attendance
+                    when (alumnoId?.asistencia) {
+                        "P" -> {
+                            radioGroup.check(R.id.radioButtonPresente)
+                        }
+                        "R" -> {
+                            radioGroup.check(R.id.radioButtonRetraso)
+                        }
+                        "FI" -> {
+                            radioGroup.check(R.id.radioButtonFaltaI)
+                        }
+                        "FJ" -> {
+                            radioGroup.check(R.id.radioButtonFaltaJ)
+                        }
+                        "Irse antes de acabar" -> {
+                            radioGroup.check(R.id.radioButtonIrseAntes)
+                        }
+                        else -> {
+                            radioGroup.clearCheck()
+                        }
+                    }
+                    adapter.selectedItem = alumnoId
+                    adapter.notifyDataSetChanged()
+                }
+            } else {
+                alumnoId?.asistencia = ""
+
+            }
         }
+
 
 
     }
