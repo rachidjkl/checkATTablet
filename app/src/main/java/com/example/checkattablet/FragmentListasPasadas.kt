@@ -34,27 +34,46 @@ class FragmentListasPasadas : Fragment() {
         val datePickerButton = view.findViewById<Button>(R.id.date_picker_button)
         val fechaActual = view.findViewById<TextView>(R.id.fechaActual)
         val cal = Calendar.getInstance()
-        datePickerButton.text = "${cal.get(Calendar.DAY_OF_MONTH)}/${cal.get(Calendar.MONTH) + 1}/${cal.get(Calendar.YEAR)}"
-        fechaActual.text = "Fecha Actual ${cal.get(Calendar.DAY_OF_MONTH)}/${cal.get(Calendar.MONTH) + 1}/${cal.get(Calendar.YEAR)}"
+
+        // Obtiene la fecha actual
+        val year = cal.get(Calendar.YEAR)
+        val month = cal.get(Calendar.MONTH)
+        val dayOfMonth = cal.get(Calendar.DAY_OF_MONTH)
+
+        // Crea un objeto Calendar para la fecha actual
+        val currentCalendar = Calendar.getInstance()
+        currentCalendar.set(year, month, dayOfMonth)
+
+        // Obtiene el nombre del día de la semana correspondiente a la fecha actual
+        val currentDayOfWeek = currentCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault())
+
+        datePickerButton.text = "${dayOfMonth}/${month + 1}/${year}"
+        fechaActual.text = "Fecha Actual ${dayOfMonth}/${month + 1}/${year} - $currentDayOfWeek"
 
         datePickerButton.setOnClickListener {
-
-            val year = cal.get(Calendar.YEAR)
-            val month = cal.get(Calendar.MONTH)
-            val dayOfMonth = cal.get(Calendar.DAY_OF_MONTH)
 
             val datePicker = DatePickerDialog(
                 requireContext(),
                 { _, selectedYear, selectedMonth, selectedDayOfMonth ->
                     // Aquí se ejecutará el código cuando el usuario seleccione una fecha
                     val selectedDate = "${selectedDayOfMonth}/${selectedMonth + 1}/${selectedYear}"
+
+                    // Crea un objeto Calendar para la fecha seleccionada
+                    val selectedCalendar = Calendar.getInstance()
+                    selectedCalendar.set(selectedYear, selectedMonth, selectedDayOfMonth)
+
+                    // Obtiene el nombre del día de la semana correspondiente a la fecha seleccionada
+                    val selectedDayOfWeek = selectedCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault())
+
                     datePickerButton.text = selectedDate
+                    fechaActual.text = "Fecha Actual ${selectedDate} - ${selectedDayOfWeek}"
                 },
                 year, month, dayOfMonth
             )
 
             datePicker.show()
         }
+
 
 
 

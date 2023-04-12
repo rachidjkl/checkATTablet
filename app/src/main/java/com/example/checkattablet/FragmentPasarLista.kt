@@ -37,12 +37,12 @@ class FragmentPasarLista : Fragment() {
             ListaAlumnos(4, "Rachid Ghenem Arias", ""),
             ListaAlumnos(5, "Joaquin Custodio Valderas", ""),
             ListaAlumnos(6, "Raul Lendines Ramos", ""),
-            ListaAlumnos(1, "Marc Alzamora Lazaro", ""),
-            ListaAlumnos(2, "Mario Leiva Torres", ""),
-            ListaAlumnos(3, "Joel Marcos Cano", ""),
-            ListaAlumnos(4, "Rachid Ghenem Arias", ""),
-            ListaAlumnos(5, "Joaquin Custodio Valderas", ""),
-            ListaAlumnos(6, "Raul Lendines Ramos", "")
+            ListaAlumnos(7, "Marc Alzamora Lazaro", ""),
+            ListaAlumnos(8, "Mario Leiva Torres", ""),
+            ListaAlumnos(9, "Joel Marcos Cano", ""),
+            ListaAlumnos(10, "Rachid Ghenem Arias", ""),
+            ListaAlumnos(11, "Joaquin Custodio Valderas", ""),
+            ListaAlumnos(12, "Raul Lendines Ramos", "")
         )
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
@@ -53,10 +53,11 @@ class FragmentPasarLista : Fragment() {
         recyclerView.adapter = adapter
 
         adapter.setOnClickListener {
-            // Reinicia el indice actual
-            alumnoId = null
-            // Update the selected item and refresh the view
+
             val alumnoSeleccionado = listaAlumno[recyclerView.getChildAdapterPosition(it)]
+            alumnoId = listaAlumno.find { ListaAlumnos -> ListaAlumnos.idAlumno.equals(alumnoSeleccionado.idAlumno) }
+            adapter.selectedItem = alumnoSeleccionado
+            adapter.notifyDataSetChanged()
 
             when(alumnoSeleccionado.asistencia){
                 "P" -> {
@@ -78,9 +79,8 @@ class FragmentPasarLista : Fragment() {
                     radioGroup.clearCheck()
                 }
             }
-            alumnoId = listaAlumno.find { ListaAlumnos -> ListaAlumnos.idAlumno.equals(alumnoSeleccionado.idAlumno) }
-            adapter.selectedItem = alumnoSeleccionado
-            adapter.notifyDataSetChanged()
+
+
         }
 
 
@@ -108,40 +108,30 @@ class FragmentPasarLista : Fragment() {
                     }
                 }
 
-
-                // Get the current position and move to the next element
-                val currentPosition = listaAlumno.indexOf(alumnoId)
-                val nextPosition = currentPosition + 1
-                if (nextPosition < listaAlumno.size) {
-                    // Select the next element and update the view
-                    alumnoId = listaAlumno[nextPosition]
-
-
-
-                    // Set the appropriate radio button for the next element's attendance
-                    when (alumnoId?.asistencia) {
-                        "P" -> {
-                            radioGroup.check(R.id.radioButtonPresente)
-                        }
-                        "R" -> {
-                            radioGroup.check(R.id.radioButtonRetraso)
-                        }
-                        "FI" -> {
-                            radioGroup.check(R.id.radioButtonFaltaI)
-                        }
-                        "FJ" -> {
-                            radioGroup.check(R.id.radioButtonFaltaJ)
-                        }
-                        "Irse antes de acabar" -> {
-                            radioGroup.check(R.id.radioButtonIrseAntes)
-                        }
-                        else -> {
-                            radioGroup.clearCheck()
-                        }
+                // Set the appropriate radio button for the next element's attendance
+                when (alumnoId?.asistencia) {
+                    "P" -> {
+                        radioGroup.check(R.id.radioButtonPresente)
                     }
-                    adapter.selectedItem = alumnoId
-                    adapter.notifyDataSetChanged()
+                    "R" -> {
+                        radioGroup.check(R.id.radioButtonRetraso)
+                    }
+                    "FI" -> {
+                        radioGroup.check(R.id.radioButtonFaltaI)
+                    }
+                    "FJ" -> {
+                        radioGroup.check(R.id.radioButtonFaltaJ)
+                    }
+                    "Irse antes de acabar" -> {
+                        radioGroup.check(R.id.radioButtonIrseAntes)
+                    }
+                    else -> {
+                        radioGroup.clearCheck()
+                    }
                 }
+                adapter.selectedItem = alumnoId
+                adapter.notifyDataSetChanged()
+
             } else {
                 alumnoId?.asistencia = ""
 

@@ -44,7 +44,7 @@
         <TextView
             style="@style/texto_barras"
             android:layout_marginStart="1020dp"
-            android:text="Bienvenido"
+            android:text="@string/bienvenido"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

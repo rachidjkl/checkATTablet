@@ -19,8 +19,6 @@ class MainActivity : AppCompatActivity() {
         val linearListasPasadas     = findViewById<LinearLayout>(R.id.lnrListasPasadas)
         val linearAjustes           = findViewById<LinearLayout>(R.id.lnrAjustes)
 
-
-
         linearPasarLista.visibility     = View.INVISIBLE
         linearListasPasadas.visibility  = View.INVISIBLE
         linearAjustes.visibility        = View.INVISIBLE
