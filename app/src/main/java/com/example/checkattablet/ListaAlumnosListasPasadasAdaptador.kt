@@ -1,6 +1,5 @@
 package com.example.checkattablet
 
-import Alumno
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -10,13 +9,13 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
-class ListaAlumnosAdaptador (private val context: Context,
-                                          private val listaAlumno: MutableList<Alumno>):
-    RecyclerView.Adapter<ListaAlumnosAdaptador.AlumnosViewHolder>(),
+class ListaAlumnosListasPasadasAdaptador (private val context: Context,
+                                          private val listaAlumnoListasPasadas: MutableList<ListaAlumnosListasPasadas>):
+    RecyclerView.Adapter<ListaAlumnosListasPasadasAdaptador.AlumnosViewHolder>(),
     View.OnClickListener, View.OnLongClickListener{
 
     var selectedRadioButtonText = ""
-    internal var selectedItem: Alumno? = null
+    internal var selectedItem: ListaAlumnosListasPasadas? = null
     private val layout = R.layout.listasalumnos_adaptador
     private var clickListener: View.OnClickListener? = null
     private var clickLongListener: View.OnLongClickListener? = null
@@ -43,10 +42,10 @@ class ListaAlumnosAdaptador (private val context: Context,
         return AlumnosViewHolder(view)
     }
 
-    override fun getItemCount() = listaAlumno.size
+    override fun getItemCount() = listaAlumnoListasPasadas.size
 
     override fun onBindViewHolder(holder: AlumnosViewHolder, position: Int) {
-        val paquete = listaAlumno[position]
+        val paquete = listaAlumnoListasPasadas[position]
         val backgroundDrawable = if (paquete == selectedItem) {
             ContextCompat.getDrawable(context, R.drawable.btn_seleccionado)
         } else {
@@ -60,10 +59,31 @@ class ListaAlumnosAdaptador (private val context: Context,
         bindPaquete(holder, paquete)
     }
 
-    fun bindPaquete(holder: AlumnosViewHolder, listaAlumnos: Alumno) {
+    fun bindPaquete(holder: AlumnosViewHolder, listaAlumnosListasPasadas: ListaAlumnosListasPasadas) {
 
-        holder.nombreAlumno?.text = listaAlumnos.nombreAlumno
+        holder.nombreAlumno?.text = listaAlumnosListasPasadas.nombreAlumno
+        holder.asistenca?.text = listaAlumnosListasPasadas.asistencia
 
+        when(listaAlumnosListasPasadas.asistencia) {
+            "P" -> {
+                holder.asistenca?.setBackgroundResource(R.drawable.fondo_verde)
+            }
+            "R" -> {
+                holder.asistenca?.setBackgroundResource(R.drawable.fondo_amarillo)
+            }
+            "FJ" -> {
+                holder.asistenca?.setBackgroundResource(R.drawable.fondo_naranja)
+            }
+            "FI" -> {
+                holder.asistenca?.setBackgroundResource(R.drawable.fondo_rojo)
+            }
+            "Irse antes de acabar" -> {
+                holder.asistenca?.setBackgroundResource(R.drawable.fondo_amarillo)
+            }
+            else -> {
+                holder.asistenca?.setBackgroundResource(R.drawable.bordes_redondos)
+            }
+        }
     }
 
 

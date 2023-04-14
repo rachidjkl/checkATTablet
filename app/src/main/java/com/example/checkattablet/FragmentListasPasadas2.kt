@@ -1,6 +1,5 @@
 package com.example.checkattablet
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import org.w3c.dom.Text
 import java.util.*
 
 
@@ -30,7 +28,7 @@ class FragmentListasPasadas2 : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        var alumnoId: ListaAlumnos? = null
+        var alumnoId: ListaAlumnosListasPasadas? = null
 
         val radioGroup = view.findViewById<RadioGroup>(R.id.myRadioGroup)
 
@@ -52,24 +50,24 @@ class FragmentListasPasadas2 : Fragment() {
             fragmentManager.popBackStack()
         }
 
-        val listaAlumno = mutableListOf<ListaAlumnos>(
-            ListaAlumnos(1, "Marc Alzamora Lazaro", ""),
-            ListaAlumnos(2, "Mario Leiva Torres", "P"),
-            ListaAlumnos(3, "Joel Marcos Cano", "R"),
-            ListaAlumnos(4, "Rachid Ghenem Arias", "FI"),
-            ListaAlumnos(5, "Joaquin Custodio Valderas", "FJ"),
-            ListaAlumnos(6, "Raul Lendines Ramos", "Irse antes de acabar"),
-            ListaAlumnos(7, "Marc Alzamora Lazaro", ""),
-            ListaAlumnos(8, "Mario Leiva Torres", "P"),
-            ListaAlumnos(9, "Joel Marcos Cano", "R"),
-            ListaAlumnos(10, "Rachid Ghenem Arias", "FI"),
-            ListaAlumnos(11, "Joaquin Custodio Valderas", "FJ"),
-            ListaAlumnos(12, "Raul Lendines Ramos", "Irse antes de acabar"),
+        val listaAlumno = mutableListOf<ListaAlumnosListasPasadas>(
+            ListaAlumnosListasPasadas(1, "Marc Alzamora Lazaro", ""),
+            ListaAlumnosListasPasadas(2, "Mario Leiva Torres", "P"),
+            ListaAlumnosListasPasadas(3, "Joel Marcos Cano", "R"),
+            ListaAlumnosListasPasadas(4, "Rachid Ghenem Arias", "FI"),
+            ListaAlumnosListasPasadas(5, "Joaquin Custodio Valderas", "FJ"),
+            ListaAlumnosListasPasadas(6, "Raul Lendines Ramos", "Irse antes de acabar"),
+            ListaAlumnosListasPasadas(7, "Marc Alzamora Lazaro", ""),
+            ListaAlumnosListasPasadas(8, "Mario Leiva Torres", "P"),
+            ListaAlumnosListasPasadas(9, "Joel Marcos Cano", "R"),
+            ListaAlumnosListasPasadas(10, "Rachid Ghenem Arias", "FI"),
+            ListaAlumnosListasPasadas(11, "Joaquin Custodio Valderas", "FJ"),
+            ListaAlumnosListasPasadas(12, "Raul Lendines Ramos", "Irse antes de acabar"),
         )
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewListasPasadas2)
 
-        val adapter = ListaAlumnosAdaptador(requireContext(), listaAlumno)
+        val adapter = ListaAlumnosListasPasadasAdaptador(requireContext(), listaAlumno)
         recyclerView.hasFixedSize()
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter

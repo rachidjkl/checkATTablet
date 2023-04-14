@@ -74,10 +74,6 @@ class FragmentListasPasadas : Fragment() {
             datePicker.show()
         }
 
-
-
-
-
         val listaGrupo = mutableListOf<ListaGrupo>(
             ListaGrupo(1, "8:40", "9:40", "M010", "UF2", "Paz", true),
             ListaGrupo(2, "9:40", "10:40", "M08", "UF5", "Jose Luis", true),
