@@ -1,13 +1,14 @@
 package com.example.checkattablet
 
 import Alumno
+import Modulo
+import Uf
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
-import android.widget.RadioGroup
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.checkattablet.ApiAcces.ApiGets
@@ -20,6 +21,8 @@ import kotlinx.coroutines.runBlocking
 class FragmentPasarLista : Fragment() {
 
     var listaAlumno: MutableList<Alumno>? = null
+    var listaModulos: MutableList<Modulo>? = mutableListOf()
+    var listaUfs: MutableList<Uf>? = null
 
     init {
         main()
@@ -27,7 +30,8 @@ class FragmentPasarLista : Fragment() {
 
     fun main() = runBlocking {
         listaAlumno = cargarAlumnos(130000, 30000, 40000)
-        
+        listaModulos = cargarModulos(130000)
+        //listaUfs = cargarUfs(40000)
     }
 
     override fun onCreateView(
@@ -64,6 +68,32 @@ class FragmentPasarLista : Fragment() {
             adapter.notifyDataSetChanged()
 
         }
+
+        val modulosSpinner = view.findViewById<Spinner>(R.id.modulos_spinner)
+        val adapterModulos = listaModulos?.let {
+            ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                it.map { it.nombreModulo } // Usa el nombre de cada módulo como texto en el Spinner
+            )
+        }
+        modulosSpinner.adapter = adapterModulos
+
+        modulosSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val moduloSeleccionado = listaModulos?.get(position)
+                // Haz algo con el módulo seleccionado
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // No se ha seleccionado nada
+            }
+        }
+
+        /*val ufs = listaUfs ?: mutableListOf()
+        val ufAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, ufs.map { it.nombreUf })
+        val listaUfs = view.findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView61)
+        listaUfs.setAdapter(ufAdapter)*/
 
 
         radioGroup.setOnCheckedChangeListener { group, checkedId ->
@@ -135,5 +165,27 @@ class FragmentPasarLista : Fragment() {
             response.body()
         }.await()
     }
+
+    suspend fun cargarModulos(clase : Int): MutableList<Modulo>? {
+
+        val userCepApi = RetrofitClient.getInstance().create(ApiGets::class.java)
+
+        return GlobalScope.async {
+            val call = userCepApi.getModulo(clase)
+            val response = call.execute()
+            response.body()
+        }.await()
+    }
+
+    /*suspend fun cargarUfs(modulo : Int): MutableList<Uf>? {
+
+        val userCepApi = RetrofitClient.getInstance().create(ApiGets::class.java)
+
+        return GlobalScope.async {
+            val call = userCepApi.getUf(modulo)
+            val response = call.execute()
+            response.body()
+        }.await()
+    }*/
 
 }
