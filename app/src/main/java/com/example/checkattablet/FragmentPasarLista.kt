@@ -24,15 +24,28 @@ class FragmentPasarLista : Fragment() {
     var listaModulos: MutableList<Modulo>? = mutableListOf()
     var listaUfs: MutableList<Uf>? = null
 
+    var clase = 130000
+    var modulo: Int? = null
+    var uf: Int? = null
+
     init {
         main()
     }
 
     fun main() = runBlocking {
-        listaAlumno = cargarAlumnos(130000, 30000, 40000)
-        listaModulos = cargarModulos(130000)
-        //listaUfs = cargarUfs(40000)
+        listaModulos = cargarModulos(clase)
     }
+    fun runUf() = runBlocking {
+        listaUfs = modulo?.let { cargarUfs(it) }
+        llenarSpinnerUf(listaUfs)
+    }
+
+    fun runAlumnos() = runBlocking {
+        listaAlumno = uf?.let { modulo?.let { it1 -> cargarAlumnos(clase, it, it1) } }
+        cargarAlumnosRecycler(listaAlumno)
+    }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,43 +59,28 @@ class FragmentPasarLista : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var alumnoId: Alumno? = null
+
 
         val radioGroup = view.findViewById<RadioGroup>(R.id.myRadioGroup)
 
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
 
-        val adapter = listaAlumno?.let { ListaAlumnosAdaptador(requireContext(), it) }
-        recyclerView.hasFixedSize()
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = adapter
 
-        adapter?.setOnClickListener {
 
-            val alumnoSeleccionado = listaAlumno?.get(recyclerView.getChildAdapterPosition(it))
-            if (alumnoSeleccionado != null) {
-                alumnoId = listaAlumno?.find { Alumno -> Alumno.idAlumno.equals(alumnoSeleccionado.idAlumno) }
-            }
-            adapter.selectedItem = alumnoSeleccionado
-            adapter.notifyDataSetChanged()
 
-        }
+
 
         val modulosSpinner = view.findViewById<Spinner>(R.id.modulos_spinner)
-        val adapterModulos = listaModulos?.let {
-            ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_spinner_item,
-                it.map { it.nombreModulo } // Usa el nombre de cada módulo como texto en el Spinner
-            )
-        }
-        modulosSpinner.adapter = adapterModulos
+        modulosSpinner.adapter = listaModulos?.let { it.map { it.nombreModulo } }
+            ?.let { MySpinnerAdapter(requireContext(), it) }
 
         modulosSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val moduloSeleccionado = listaModulos?.get(position)
-                // Haz algo con el módulo seleccionado
+                if (moduloSeleccionado != null) {
+                    modulo = moduloSeleccionado.idModulo
+                    runUf()
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -90,10 +88,7 @@ class FragmentPasarLista : Fragment() {
             }
         }
 
-        /*val ufs = listaUfs ?: mutableListOf()
-        val ufAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, ufs.map { it.nombreUf })
-        val listaUfs = view.findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView61)
-        listaUfs.setAdapter(ufAdapter)*/
+
 
 
         radioGroup.setOnCheckedChangeListener { group, checkedId ->
@@ -155,6 +150,55 @@ class FragmentPasarLista : Fragment() {
 
     }
 
+    private fun llenarSpinnerUf(listaUfs: MutableList<Uf>?) {
+        val ufsSpinner = view?.findViewById<Spinner>(R.id.uf_spinner)
+        if (ufsSpinner != null) {
+            ufsSpinner.adapter = listaUfs?.let { it.map { it.nombreUf } }
+                ?.let { MySpinnerAdapter(requireContext(), it) }
+        }
+
+        if (ufsSpinner != null) {
+            ufsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    val UfSeleccionado = listaUfs?.get(position)
+                    if (UfSeleccionado != null) {
+                        uf = UfSeleccionado.idUF
+                        runAlumnos()
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    // No se ha seleccionado nada
+                }
+            }
+        }
+    }
+
+    private fun cargarAlumnosRecycler(listaAlumno: MutableList<Alumno>?) {
+
+        var alumnoId: Alumno? = null
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView)
+        val adapter = listaAlumno?.let { ListaAlumnosAdaptador(requireContext(), it) }
+        recyclerView?.hasFixedSize()
+        if (recyclerView != null) {
+            recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        }
+        if (recyclerView != null) {
+            recyclerView.adapter = adapter
+        }
+
+        adapter?.setOnClickListener {
+
+            val alumnoSeleccionado = recyclerView?.let { it1 -> listaAlumno?.get(it1.getChildAdapterPosition(it)) }
+            if (alumnoSeleccionado != null) {
+                alumnoId = listaAlumno?.find { Alumno -> Alumno.idAlumno.equals(alumnoSeleccionado.idAlumno) }
+            }
+            adapter.selectedItem = alumnoSeleccionado
+            adapter.notifyDataSetChanged()
+
+        }
+    }
+
     suspend fun cargarAlumnos(clase : Int, uf : Int, modulo: Int): MutableList<Alumno>? {
 
         val userCepApi = RetrofitClient.getInstance().create(ApiGets::class.java)
@@ -177,7 +221,7 @@ class FragmentPasarLista : Fragment() {
         }.await()
     }
 
-    /*suspend fun cargarUfs(modulo : Int): MutableList<Uf>? {
+    suspend fun cargarUfs(modulo : Int): MutableList<Uf>? {
 
         val userCepApi = RetrofitClient.getInstance().create(ApiGets::class.java)
 
@@ -186,6 +230,6 @@ class FragmentPasarLista : Fragment() {
             val response = call.execute()
             response.body()
         }.await()
-    }*/
+    }
 
 }

@@ -20,8 +20,8 @@ interface ApiGets {
     fun getAlumnos(@Path("idClase") clase: Int, @Path("idUf") uf: Int, @Path("idModulo") modulo: Int): Call<MutableList<Alumno>>
 
     @GET("api/Ufs/Uf/idModulo/{idModulo}")
-    fun getModulo(@Path("idModulo") idModulo: Int): Call<MutableList<Modulo>>
+    fun getUf(@Path("idModulo") idModulo: Int): Call<MutableList<Uf>>
 
-    @GET("api/ClaseModulo/Modulo/idClase//{idlase}")
-    fun getUf(@Path("idClase") idClase: Int): Call<MutableList<Uf>>
+    @GET("api/ClaseModulo/Modulo/idClase//{idClase}")
+    fun getModulo(@Path("idClase") idClase: Int): Call<MutableList<Modulo>>
 }
