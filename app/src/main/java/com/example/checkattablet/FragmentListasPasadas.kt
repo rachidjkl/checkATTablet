@@ -10,14 +10,36 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.checkattablet.ApiAcces.ApiGets
+import com.example.checkattablet.ApiAcces.RetrofitClient
+import com.example.checkattablet.DataModel.Horario
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import java.util.*
 
 
 class FragmentListasPasadas : Fragment() {
 
-    override fun onCreateView(
+    companion object{
+        lateinit var listaHorariosDiaClase: List<Horario>
+    }
+
+    fun callApiUserCep(diaSemana: String) = runBlocking {
+        var listHoraios = globalFun1(diaSemana)
+        if (listHoraios == null) {
+
+            Toast.makeText(requireActivity(), "Error al consultar los Horarios", Toast.LENGTH_SHORT).show()
+        } else {
+            listaHorariosDiaClase = listHoraios
+        }
+    }
+
+
+        override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,11 +66,13 @@ class FragmentListasPasadas : Fragment() {
         val currentCalendar = Calendar.getInstance()
         currentCalendar.set(year, month, dayOfMonth)
 
-        // Obtiene el nombre del día de la semana correspondiente a la fecha actual
-        val currentDayOfWeek = currentCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault())
+        // Obtiene el nombre del día de la semana correspondiente a la fecha actual en español
+        val currentDayOfWeek = currentCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale("es", "ES"))
 
         datePickerButton.text = "${dayOfMonth}/${month + 1}/${year}"
         fechaActual.text = "Fecha Actual ${dayOfMonth}/${month + 1}/${year} - $currentDayOfWeek"
+
+        callApiUserCep(currentDayOfWeek)
 
         datePickerButton.setOnClickListener {
 
@@ -84,7 +108,7 @@ class FragmentListasPasadas : Fragment() {
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewListasPasadas)
 
-        val adapter = ListasPasadasAdaptador(requireContext(), listaGrupo)
+        val adapter = ListasPasadasAdaptador(requireContext(), listaHorariosDiaClase)
         recyclerView.hasFixedSize()
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
@@ -107,5 +131,34 @@ class FragmentListasPasadas : Fragment() {
         }
 
     }
+
+        private suspend fun globalFun1(diaSemana :String ):List<Horario>? {
+
+            val userCepApi = RetrofitClient.getInstance().create(ApiGets::class.java)
+
+            return GlobalScope.async {
+                val call = userCepApi.getHorarios(130002,diaSemana)
+                val response = call.execute()
+                response.body()
+            }.await()
+        }
+
+    fun obtenerDiaDeLaSemana(): String {
+        val calendar = Calendar.getInstance()
+        val diaDeLaSemana = calendar.get(Calendar.DAY_OF_WEEK)
+
+        when (diaDeLaSemana) {
+            Calendar.SUNDAY -> return "Domingo"
+            Calendar.MONDAY -> return "Lunes"
+            Calendar.TUESDAY -> return "Martes"
+            Calendar.WEDNESDAY -> return "Miércoles"
+            Calendar.THURSDAY -> return "Jueves"
+            Calendar.FRIDAY -> return "Viernes"
+            Calendar.SATURDAY -> return "Sábado"
+            else -> return "Error"
+        }
+    }
+
+
 
 }

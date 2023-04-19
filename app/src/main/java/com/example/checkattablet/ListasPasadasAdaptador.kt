@@ -15,9 +15,10 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.checkattablet.DataModel.Horario
 
 class ListasPasadasAdaptador (private val context: Context,
-                         private val listaGrupos: MutableList<ListaGrupo>):
+                         private val listaHorariosDiaClase: List<Horario>):
     RecyclerView.Adapter<ListasPasadasAdaptador.GruposViewHolder>(),
     View.OnClickListener, View.OnLongClickListener{
 
@@ -49,28 +50,22 @@ class ListasPasadasAdaptador (private val context: Context,
         return GruposViewHolder(view)
     }
 
-    override fun getItemCount() = listaGrupos.size
+    override fun getItemCount() = listaHorariosDiaClase.size
 
     override fun onBindViewHolder(holder: GruposViewHolder, position: Int) {
-        val paquete = listaGrupos[position]
+        val paquete = listaHorariosDiaClase[position]
         bindPaquete(holder, paquete)
     }
 
-    fun bindPaquete(holder: GruposViewHolder, listaGrupos: ListaGrupo) {
+    fun bindPaquete(holder: GruposViewHolder, horario: Horario) {
 
-        holder.horaClase?.text      = listaGrupos.horaInicio + "-" + listaGrupos.horaFinal
-        holder.idModulo?.text       = listaGrupos.modulo + "-" + listaGrupos.uf
-        holder.nombreProfe?.text    = listaGrupos.profe
-        when(listaGrupos.estado) {
-            true -> {
-                holder.estadoLista?.text = "Validada"
-                holder.estadoLista?.setBackgroundResource(R.drawable.fondo_verde)
-            }
-            false -> {
-                holder.estadoLista?.text = "No Validada"
-                holder.estadoLista?.setBackgroundResource(R.drawable.fondo_rojo)
-            }
-        }
+        val horaInicio = if (horario.horaInicio.length > 5) horario.horaInicio.substring(0, 5) else horario.horaInicio
+        val horaFin = if (horario.horaFin.length > 5) horario.horaFin.substring(0, 5) else horario.horaFin
+
+        holder.horaClase?.text      = horaInicio + "-" + horaFin
+        holder.idModulo?.text       = horario.siglasUf // en realidad son siglas modulo
+        holder.nombreProfe?.text
+
     }
 
 
