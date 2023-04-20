@@ -8,4 +8,5 @@ data class Horario(@SerializedName("id_horario") var idHorario: Int,
             @SerializedName("hora_inicio") var horaInicio: String,
             @SerializedName("hora_fin") var horaFin: String,
             @SerializedName("nombre_modulo") var nombreModulo: String,
-            @SerializedName("siglas_uf") var siglasUf: String)
+            @SerializedName("siglas_uf") var siglasUf: String,
+            @SerializedName("idPasarListaGrupo") var idPasarListaGrupo: Int)

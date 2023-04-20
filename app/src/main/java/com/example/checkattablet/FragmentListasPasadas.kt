@@ -27,6 +27,7 @@ class FragmentListasPasadas : Fragment() {
     companion object{
         lateinit var listaHorariosDiaClase: List<Horario>
     }
+    private val date: String = ""
 
     fun callApiUserCep(diaSemana: String) = runBlocking {
         var listHoraios = globalFun1(diaSemana)
@@ -72,7 +73,12 @@ class FragmentListasPasadas : Fragment() {
         datePickerButton.text = "${dayOfMonth}/${month + 1}/${year}"
         fechaActual.text = "Fecha Actual ${dayOfMonth}/${month + 1}/${year} - $currentDayOfWeek"
 
+
+        val fecha = "${year}-${month + 1}-${dayOfMonth}"
+
+
         callApiUserCep(currentDayOfWeek)
+
 
         datePickerButton.setOnClickListener {
 
@@ -108,7 +114,7 @@ class FragmentListasPasadas : Fragment() {
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewListasPasadas)
 
-        val adapter = ListasPasadasAdaptador(requireContext(), listaHorariosDiaClase)
+        val adapter = ListasPasadasAdaptador(requireContext(), listaHorariosDiaClase,fecha)
         recyclerView.hasFixedSize()
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter

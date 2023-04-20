@@ -10,21 +10,40 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import com.example.checkattablet.ApiAcces.ApiGets
+import com.example.checkattablet.ApiAcces.RetrofitClient
 import com.example.checkattablet.DataModel.Horario
+import com.example.checkattablet.DataModel.PasarListaGrupo
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 
 class ListasPasadasAdaptador (private val context: Context,
-                         private val listaHorariosDiaClase: List<Horario>):
+                         private val listaHorariosDiaClase: List<Horario>, private val fecha: String):
     RecyclerView.Adapter<ListasPasadasAdaptador.GruposViewHolder>(),
     View.OnClickListener, View.OnLongClickListener{
 
     private val layout = R.layout.listaspasadas_adaptador
     private var clickListener: View.OnClickListener? = null
     private var clickLongListener: View.OnLongClickListener? = null
+    private var idPasarListagrupo: Int = 0
+
+
+
+    fun callApiPasarListaGrupo(horario :Horario, fecha: String) = runBlocking {
+
+        var pasarListaGrupo = globalFunGet(horario.idHorario, fecha)
+
+        if (pasarListaGrupo == null) {
+            var newPasarListaGrupo = PasarListaGrupo(null,horario.horaInicio,horario.horaFin,horario.idModulo,10005,horario.idHorario,fecha)
+
+            globalFunCreatePasarListaGrupo(newPasarListaGrupo)
+        }else{
+            idPasarListagrupo = pasarListaGrupo.idListaGrupo!!.toInt()
+        }
+    }
 
 
     class GruposViewHolder(val view: View):
@@ -62,10 +81,37 @@ class ListasPasadasAdaptador (private val context: Context,
         val horaInicio = if (horario.horaInicio.length > 5) horario.horaInicio.substring(0, 5) else horario.horaInicio
         val horaFin = if (horario.horaFin.length > 5) horario.horaFin.substring(0, 5) else horario.horaFin
 
+        callApiPasarListaGrupo(horario, fecha);
+
+
         holder.horaClase?.text      = horaInicio + "-" + horaFin
         holder.idModulo?.text       = horario.siglasUf // en realidad son siglas modulo
         holder.nombreProfe?.text
+        holder.estadoLista?.text = idPasarListagrupo.toString()
 
+    }
+
+
+    private suspend fun globalFunGet(idHorario: Int, fecha: String):PasarListaGrupo? {
+
+        val userCepApi = RetrofitClient.getInstance().create(ApiGets::class.java)
+
+        return GlobalScope.async {
+            val call = userCepApi.getPasarListaGrupo(idHorario, fecha)
+            val response = call.execute()
+            response.body()
+        }.await()
+    }
+
+    private suspend fun globalFunCreatePasarListaGrupo ( pasarListaGrupo: PasarListaGrupo ):Void? {
+
+        val userCepApi = RetrofitClient.getInstance().create(ApiGets::class.java)
+
+        return GlobalScope.async {
+            val call = userCepApi.InsertPasarListaGrupo(pasarListaGrupo)
+            val response = call.execute()
+            response.body()
+        }.await()
     }
 
 
