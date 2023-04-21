@@ -24,7 +24,7 @@ class FragmentPasarLista : Fragment() {
     var listaModulos: MutableList<Modulo>? = mutableListOf()
     var listaUfs: MutableList<Uf>? = null
 
-    var clase = 130000
+    var clase = 130002
     var modulo: Int? = null
     var uf: Int? = null
 

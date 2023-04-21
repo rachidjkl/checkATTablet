@@ -1,14 +1,12 @@
-package com.example.checkattablet
+package com.example.checkattablet.PasarLista
 
 import android.app.DatePickerDialog
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.checkattablet.ApiAcces.ApiGets
 import com.example.checkattablet.ApiAcces.RetrofitClient
 import com.example.checkattablet.DataModel.Horario
+import com.example.checkattablet.FragmentListasPasadas2
+import com.example.checkattablet.ListaGrupo
+import com.example.checkattablet.ListasPasadasAdaptador
+import com.example.checkattablet.R
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
