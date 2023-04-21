@@ -13,12 +13,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.checkattablet.ApiAcces.ApiGets
 import com.example.checkattablet.ApiAcces.RetrofitClient
+import com.example.checkattablet.DataModel.Horario
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 
 
 class FragmentPasarLista : Fragment() {
+
+    var horarioPasarLista: Horario? = null;
 
     var listaAlumno: MutableList<Alumno>? = null
     var listaModulos: MutableList<Modulo>? = mutableListOf()
@@ -58,6 +61,13 @@ class FragmentPasarLista : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        horarioPasarLista = arguments?.getSerializable("horarioPasarLista") as? Horario
+
+
+        //spinner modulo select
+        val value = horarioPasarLista!!.pasarListaGrupo.idModulo
+        val modulosSpinner = view.findViewById<Spinner>(R.id.modulos_spinner)
+
 
 
 
@@ -70,7 +80,7 @@ class FragmentPasarLista : Fragment() {
 
 
 
-        val modulosSpinner = view.findViewById<Spinner>(R.id.modulos_spinner)
+        //modulo spinner
         modulosSpinner.adapter = listaModulos?.let { it.map { it.nombreModulo } }
             ?.let { MySpinnerAdapter(requireContext(), it) }
 
@@ -86,7 +96,11 @@ class FragmentPasarLista : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 // No se ha seleccionado nada
             }
+
+
         }
+        var position = listaModulos!!.indexOfFirst { it.idModulo == value }
+        modulosSpinner.setSelection(position)
 
 
 

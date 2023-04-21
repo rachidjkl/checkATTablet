@@ -90,7 +90,7 @@ class ListasPasadasAdaptador (private val context: Context,
 
 
         callApiPasarListaGrupo(horario, fecha);
-        horario.idPasarListaGrupo = pasarListaGrupoAux!!.idListaGrupo!!.toInt()
+        horario.pasarListaGrupo = pasarListaGrupoAux!!
         callApiProfesor(pasarListaGrupoAux!!.idProfe)
 
 

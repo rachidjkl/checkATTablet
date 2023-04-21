@@ -11,13 +11,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.checkattablet.*
 import com.example.checkattablet.ApiAcces.ApiGets
 import com.example.checkattablet.ApiAcces.RetrofitClient
 import com.example.checkattablet.DataModel.Horario
-import com.example.checkattablet.FragmentListasPasadas2
-import com.example.checkattablet.ListaGrupo
-import com.example.checkattablet.ListasPasadasAdaptador
-import com.example.checkattablet.R
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -29,6 +26,7 @@ class FragmentListasPasadas : Fragment() {
     companion object{
         lateinit var listaHorariosDiaClase: List<Horario>
     }
+
     private val date: String = ""
 
     fun callApiUserCep(diaSemana: String) = runBlocking {
@@ -106,13 +104,7 @@ class FragmentListasPasadas : Fragment() {
             datePicker.show()
         }
 
-        val listaGrupo = mutableListOf<ListaGrupo>(
-            ListaGrupo(1, "8:40", "9:40", "M010", "UF2", "Paz", true),
-            ListaGrupo(2, "9:40", "10:40", "M08", "UF5", "Jose Luis", true),
-            ListaGrupo(3, "10:40", "11:40", "M04", "UF3", "Francisco", true),
-            ListaGrupo(4, "12:00", "13:00", "M013", "UF1", "Marcos", false),
-            ListaGrupo(5, "13:00", "14:00", "M013", "UF1", "Marcos", false),
-        )
+
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewListasPasadas)
 
@@ -122,10 +114,12 @@ class FragmentListasPasadas : Fragment() {
         recyclerView.adapter = adapter
 
         adapter.setOnClickListener {
-            val grupo = listaGrupo[recyclerView.getChildAdapterPosition(it)]
+
+            var horarioPasarLista = listaHorariosDiaClase[recyclerView.getChildAdapterPosition(it)]
             val bundle = Bundle()
-            bundle.putSerializable("listaGrupo", grupo)
-            val fragmentoPasarLista = FragmentListasPasadas2()
+            bundle.putSerializable("horarioPasarLista", horarioPasarLista)
+
+            val fragmentoPasarLista = FragmentPasarLista()
             fragmentoPasarLista.arguments = bundle
             val fragmentManager = requireActivity().supportFragmentManager
             val fragmentTransaction = fragmentManager.beginTransaction()

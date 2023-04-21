@@ -1,6 +1,7 @@
 package com.example.checkattablet.DataModel
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Horario(@SerializedName("id_horario") var idHorario: Int,
             @SerializedName("id_clase") var idClase: Int,
@@ -9,4 +10,4 @@ data class Horario(@SerializedName("id_horario") var idHorario: Int,
             @SerializedName("hora_fin") var horaFin: String,
             @SerializedName("nombre_modulo") var nombreModulo: String,
             @SerializedName("siglas_uf") var siglasUf: String,
-            @SerializedName("idPasarListaGrupo") var idPasarListaGrupo: Int)
+            @SerializedName("pasarListaGrupo") var pasarListaGrupo: PasarListaGrupo): Serializable
