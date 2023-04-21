@@ -96,7 +96,7 @@ class ListasPasadasAdaptador (private val context: Context,
 
         holder.horaClase?.text = horaInicio + "-" + horaFin
         holder.idModulo?.text = horario.siglasUf // en realidad son siglas modulo
-        holder.nombreProfe?.text = profesorLista!!.nombreProfesor
+        holder.nombreProfe?.text = profesorLista!!.nombreProfesor +" "+profesorLista!!.apellido1Profe
         holder.estadoLista?.text = if (pasarListaGrupoAux!!.estado == 0) "No Pasada" else "Pasada"
         if (pasarListaGrupoAux!!.estado == 0) {
             holder.estadoLista?.setBackgroundResource(R.drawable.fondo_rojo)
