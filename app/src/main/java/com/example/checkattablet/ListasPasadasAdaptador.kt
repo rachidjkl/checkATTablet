@@ -1,12 +1,6 @@
 package com.example.checkattablet
 
 import android.content.Context
-import android.content.Intent
-import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.graphics.drawable.Drawable
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +22,7 @@ class ListasPasadasAdaptador (private val context: Context,
     private val layout = R.layout.listaspasadas_adaptador
     private var clickListener: View.OnClickListener? = null
     private var clickLongListener: View.OnLongClickListener? = null
-    private var idPasarListagrupo: Int = 0
+    private var pasarListaGrupoAux: PasarListaGrupo? = null
 
 
 
@@ -37,12 +31,13 @@ class ListasPasadasAdaptador (private val context: Context,
         var pasarListaGrupo = globalFunGet(horario.idHorario, fecha)
 
         if (pasarListaGrupo == null) {
-            var newPasarListaGrupo = PasarListaGrupo(null,horario.horaInicio,horario.horaFin,horario.idModulo,10005,horario.idHorario,fecha)
+            var newPasarListaGrupo = PasarListaGrupo(null,horario.horaInicio,horario.horaFin,horario.idModulo,10005,horario.idHorario,fecha,0)
 
             globalFunCreatePasarListaGrupo(newPasarListaGrupo)
-        }else{
-            idPasarListagrupo = pasarListaGrupo.idListaGrupo!!.toInt()
+            pasarListaGrupo = globalFunGet(horario.idHorario, fecha)
         }
+        pasarListaGrupoAux = pasarListaGrupo
+
     }
 
 
@@ -82,17 +77,25 @@ class ListasPasadasAdaptador (private val context: Context,
         val horaFin = if (horario.horaFin.length > 5) horario.horaFin.substring(0, 5) else horario.horaFin
 
         callApiPasarListaGrupo(horario, fecha);
+        horario.idPasarListaGrupo = pasarListaGrupoAux!!.idListaGrupo!!.toInt()
+        if (pasarListaGrupoAux!!.estado == 0){
 
+        }
 
-        holder.horaClase?.text      = horaInicio + "-" + horaFin
-        holder.idModulo?.text       = horario.siglasUf // en realidad son siglas modulo
+        holder.horaClase?.text = horaInicio + "-" + horaFin
+        holder.idModulo?.text = horario.siglasUf // en realidad son siglas modulo
         holder.nombreProfe?.text
-        holder.estadoLista?.text = idPasarListagrupo.toString()
+        holder.estadoLista?.text = if (pasarListaGrupoAux!!.estado == 0) "No Pasada" else "Pasada"
+        if (pasarListaGrupoAux!!.estado == 0) {
+            holder.estadoLista?.setBackgroundResource(R.drawable.fondo_verde)
+        } else {
+            holder.estadoLista?.setBackgroundResource(R.drawable.fondo_rojo)
+        }
 
     }
 
 
-    private suspend fun globalFunGet(idHorario: Int, fecha: String):PasarListaGrupo? {
+    private suspend fun globalFunGet(idHorario: Int, fecha: String): PasarListaGrupo? {
 
         val userCepApi = RetrofitClient.getInstance().create(ApiGets::class.java)
 

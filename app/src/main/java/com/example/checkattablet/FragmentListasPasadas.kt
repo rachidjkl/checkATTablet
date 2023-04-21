@@ -74,7 +74,7 @@ class FragmentListasPasadas : Fragment() {
         fechaActual.text = "Fecha Actual ${dayOfMonth}/${month + 1}/${year} - $currentDayOfWeek"
 
 
-        val fecha = "${year}-${month + 1}-${dayOfMonth}"
+        val fecha = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
 
 
         callApiUserCep(currentDayOfWeek)

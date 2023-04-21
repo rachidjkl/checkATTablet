@@ -8,4 +8,5 @@ data class PasarListaGrupo (@SerializedName("id_lista_grupo") var idListaGrupo: 
                            @SerializedName("modulo") var idModulo: Int,
                            @SerializedName("profe") var idProfe: Int,
                            @SerializedName("id_horario") var idHorario: Int,
-                           @SerializedName("fecha") var fecha: String)
+                           @SerializedName("fecha") var fecha: String,
+                            @SerializedName("estado") var estado: Int,)

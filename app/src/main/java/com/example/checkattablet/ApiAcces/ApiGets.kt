@@ -5,8 +5,6 @@ import com.example.checkattablet.DataModel.Horario
 import com.example.checkattablet.DataModel.PasarLista
 import com.example.checkattablet.DataModel.PasarListaGrupo
 import retrofit2.Call
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -27,7 +25,7 @@ interface ApiGets {
     fun getHorarios(@Path("idClase") clase: Int, @Path("diaSemana") diaSemana: String): Call<List<Horario>>
 
     //get
-    @POST("api/Pasar_listas_grupo/idHorario/{idHorario}}/fecha/{fecha}")
+    @GET("api/Pasar_listas_grupo/idHorario/{idHorario}/fecha/{fecha}")
     fun getPasarListaGrupo(@Path("idHorario") idHorario: Int, @Path("fecha") fecha: String): Call<PasarListaGrupo>
 
     //insert
