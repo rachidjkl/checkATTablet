@@ -5,6 +5,8 @@ import com.example.checkattablet.DataModel.Horario
 import com.example.checkattablet.DataModel.PasarLista
 import com.example.checkattablet.DataModel.PasarListaGrupo
 import com.example.checkattablet.DataModel.Profesor
+import Modulo
+import Uf
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -21,6 +23,8 @@ interface ApiGets {
     @GET("api/Alumno/idClase/{idClase}/idUf/{idUf}/idModulo/{idModulo}")
     fun getAlumnos(@Path("idClase") clase: Int, @Path("idUf") uf: Int, @Path("idModulo") modulo: Int): Call<MutableList<Alumno>>
 
+    @GET("api/Ufs/Uf/idModulo/{idModulo}")
+    fun getUf(@Path("idModulo") idModulo: Int): Call<MutableList<Uf>>
 
     @GET("api/Horarios/HorariosDia/idClase/{idClase}/diaSemana/{diaSemana}")
     fun getHorarios(@Path("idClase") clase: Int, @Path("diaSemana") diaSemana: String): Call<List<Horario>>
@@ -44,4 +48,6 @@ interface ApiGets {
 
     @POST("api/Pasar_Lista/{Pasar_Lista}")
     fun InsertPasarLista(@Body pasarLista: PasarLista): Call<Void>
+    @GET("api/ClaseModulo/Modulo/idClase//{idClase}")
+    fun getModulo(@Path("idClase") idClase: Int): Call<MutableList<Modulo>>
 }

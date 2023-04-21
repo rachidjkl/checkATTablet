@@ -1,13 +1,14 @@
 package com.example.checkattablet
 
 import Alumno
+import Modulo
+import Uf
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
-import android.widget.RadioGroup
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.checkattablet.ApiAcces.ApiGets
@@ -20,15 +21,31 @@ import kotlinx.coroutines.runBlocking
 class FragmentPasarLista : Fragment() {
 
     var listaAlumno: MutableList<Alumno>? = null
+    var listaModulos: MutableList<Modulo>? = mutableListOf()
+    var listaUfs: MutableList<Uf>? = null
+
+    var clase = 130000
+    var modulo: Int? = null
+    var uf: Int? = null
 
     init {
         main()
     }
 
     fun main() = runBlocking {
-        listaAlumno = cargarAlumnos(130000, 30000, 40000)
-        
+        listaModulos = cargarModulos(clase)
     }
+    fun runUf() = runBlocking {
+        listaUfs = modulo?.let { cargarUfs(it) }
+        llenarSpinnerUf(listaUfs)
+    }
+
+    fun runAlumnos() = runBlocking {
+        listaAlumno = uf?.let { modulo?.let { it1 -> cargarAlumnos(clase, it, it1) } }
+        cargarAlumnosRecycler(listaAlumno)
+    }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,28 +59,36 @@ class FragmentPasarLista : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var alumnoId: Alumno? = null
+
 
         val radioGroup = view.findViewById<RadioGroup>(R.id.myRadioGroup)
 
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
 
-        val adapter = listaAlumno?.let { ListaAlumnosAdaptador(requireContext(), it) }
-        recyclerView.hasFixedSize()
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = adapter
 
-        adapter?.setOnClickListener {
 
-            val alumnoSeleccionado = listaAlumno?.get(recyclerView.getChildAdapterPosition(it))
-            if (alumnoSeleccionado != null) {
-                alumnoId = listaAlumno?.find { Alumno -> Alumno.idAlumno.equals(alumnoSeleccionado.idAlumno) }
+
+
+
+        val modulosSpinner = view.findViewById<Spinner>(R.id.modulos_spinner)
+        modulosSpinner.adapter = listaModulos?.let { it.map { it.nombreModulo } }
+            ?.let { MySpinnerAdapter(requireContext(), it) }
+
+        modulosSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val moduloSeleccionado = listaModulos?.get(position)
+                if (moduloSeleccionado != null) {
+                    modulo = moduloSeleccionado.idModulo
+                    runUf()
+                }
             }
-            adapter.selectedItem = alumnoSeleccionado
-            adapter.notifyDataSetChanged()
 
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // No se ha seleccionado nada
+            }
         }
+
+
 
 
         radioGroup.setOnCheckedChangeListener { group, checkedId ->
@@ -125,12 +150,83 @@ class FragmentPasarLista : Fragment() {
 
     }
 
+    private fun llenarSpinnerUf(listaUfs: MutableList<Uf>?) {
+        val ufsSpinner = view?.findViewById<Spinner>(R.id.uf_spinner)
+        if (ufsSpinner != null) {
+            ufsSpinner.adapter = listaUfs?.let { it.map { it.nombreUf } }
+                ?.let { MySpinnerAdapter(requireContext(), it) }
+        }
+
+        if (ufsSpinner != null) {
+            ufsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    val UfSeleccionado = listaUfs?.get(position)
+                    if (UfSeleccionado != null) {
+                        uf = UfSeleccionado.idUF
+                        runAlumnos()
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    // No se ha seleccionado nada
+                }
+            }
+        }
+    }
+
+    private fun cargarAlumnosRecycler(listaAlumno: MutableList<Alumno>?) {
+
+        var alumnoId: Alumno? = null
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView)
+        val adapter = listaAlumno?.let { ListaAlumnosAdaptador(requireContext(), it) }
+        recyclerView?.hasFixedSize()
+        if (recyclerView != null) {
+            recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        }
+        if (recyclerView != null) {
+            recyclerView.adapter = adapter
+        }
+
+        adapter?.setOnClickListener {
+
+            val alumnoSeleccionado = recyclerView?.let { it1 -> listaAlumno?.get(it1.getChildAdapterPosition(it)) }
+            if (alumnoSeleccionado != null) {
+                alumnoId = listaAlumno?.find { Alumno -> Alumno.idAlumno.equals(alumnoSeleccionado.idAlumno) }
+            }
+            adapter.selectedItem = alumnoSeleccionado
+            adapter.notifyDataSetChanged()
+
+        }
+    }
+
     suspend fun cargarAlumnos(clase : Int, uf : Int, modulo: Int): MutableList<Alumno>? {
 
         val userCepApi = RetrofitClient.getInstance().create(ApiGets::class.java)
 
         return GlobalScope.async {
             val call = userCepApi.getAlumnos(clase,uf,modulo)
+            val response = call.execute()
+            response.body()
+        }.await()
+    }
+
+    suspend fun cargarModulos(clase : Int): MutableList<Modulo>? {
+
+        val userCepApi = RetrofitClient.getInstance().create(ApiGets::class.java)
+
+        return GlobalScope.async {
+            val call = userCepApi.getModulo(clase)
+            val response = call.execute()
+            response.body()
+        }.await()
+    }
+
+    suspend fun cargarUfs(modulo : Int): MutableList<Uf>? {
+
+        val userCepApi = RetrofitClient.getInstance().create(ApiGets::class.java)
+
+        return GlobalScope.async {
+            val call = userCepApi.getUf(modulo)
             val response = call.execute()
             response.body()
         }.await()
