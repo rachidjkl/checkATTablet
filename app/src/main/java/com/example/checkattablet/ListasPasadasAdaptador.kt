@@ -10,6 +10,7 @@ import com.example.checkattablet.ApiAcces.ApiGets
 import com.example.checkattablet.ApiAcces.RetrofitClient
 import com.example.checkattablet.DataModel.Horario
 import com.example.checkattablet.DataModel.PasarListaGrupo
+import com.example.checkattablet.DataModel.Profesor
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -23,6 +24,7 @@ class ListasPasadasAdaptador (private val context: Context,
     private var clickListener: View.OnClickListener? = null
     private var clickLongListener: View.OnLongClickListener? = null
     private var pasarListaGrupoAux: PasarListaGrupo? = null
+    private var profesorLista: Profesor? = null
 
 
 
@@ -37,6 +39,16 @@ class ListasPasadasAdaptador (private val context: Context,
             pasarListaGrupo = globalFunGet(horario.idHorario, fecha)
         }
         pasarListaGrupoAux = pasarListaGrupo
+
+    }
+
+    fun callApiProfesor(idProfesor: Int) = runBlocking {
+
+        var profe = globalFunGetProfesor(idProfesor)
+
+        if (profe != null) {
+            profesorLista = profe
+        }
 
     }
 
@@ -76,20 +88,20 @@ class ListasPasadasAdaptador (private val context: Context,
         val horaInicio = if (horario.horaInicio.length > 5) horario.horaInicio.substring(0, 5) else horario.horaInicio
         val horaFin = if (horario.horaFin.length > 5) horario.horaFin.substring(0, 5) else horario.horaFin
 
+
         callApiPasarListaGrupo(horario, fecha);
         horario.idPasarListaGrupo = pasarListaGrupoAux!!.idListaGrupo!!.toInt()
-        if (pasarListaGrupoAux!!.estado == 0){
+        callApiProfesor(pasarListaGrupoAux!!.idProfe)
 
-        }
 
         holder.horaClase?.text = horaInicio + "-" + horaFin
         holder.idModulo?.text = horario.siglasUf // en realidad son siglas modulo
-        holder.nombreProfe?.text
+        holder.nombreProfe?.text = profesorLista!!.nombreProfesor
         holder.estadoLista?.text = if (pasarListaGrupoAux!!.estado == 0) "No Pasada" else "Pasada"
         if (pasarListaGrupoAux!!.estado == 0) {
-            holder.estadoLista?.setBackgroundResource(R.drawable.fondo_verde)
-        } else {
             holder.estadoLista?.setBackgroundResource(R.drawable.fondo_rojo)
+        } else {
+            holder.estadoLista?.setBackgroundResource(R.drawable.fondo_verde)
         }
 
     }
@@ -112,6 +124,17 @@ class ListasPasadasAdaptador (private val context: Context,
 
         return GlobalScope.async {
             val call = userCepApi.InsertPasarListaGrupo(pasarListaGrupo)
+            val response = call.execute()
+            response.body()
+        }.await()
+    }
+
+    private suspend fun globalFunGetProfesor (idProfesor: Int):Profesor? {
+
+        val userCepApi = RetrofitClient.getInstance().create(ApiGets::class.java)
+
+        return GlobalScope.async {
+            val call = userCepApi.getProfesor(idProfesor)
             val response = call.execute()
             response.body()
         }.await()

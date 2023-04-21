@@ -4,6 +4,7 @@ import Alumno
 import com.example.checkattablet.DataModel.Horario
 import com.example.checkattablet.DataModel.PasarLista
 import com.example.checkattablet.DataModel.PasarListaGrupo
+import com.example.checkattablet.DataModel.Profesor
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -26,13 +27,17 @@ interface ApiGets {
 
     //get
     @GET("api/Pasar_listas_grupo/idHorario/{idHorario}/fecha/{fecha}")
-    fun getPasarListaGrupo(@Path("idHorario") idHorario: Int, @Path("fecha") fecha: String): Call<PasarListaGrupo>
+    fun getPasarListaGrupo(@Path("idHorario") idHorario: Int, @Path("fecha") fecha: String): Call<PasarListaGrupo>//get
+
+    //get profe
+    @GET("api/Profesors/{id}")
+    fun getProfesor(@Path("id") idProfe: Int): Call<Profesor>
 
     //insert
     @POST("api/Pasar_listas_grupo")
     fun InsertPasarListaGrupo(@Body pasarListaGrupo: PasarListaGrupo): Call<Void>
 
-    //update
+    //update estado a true
     @POST("api/Pasar_listas_grupo/setEstadoTrue/id_lista_grupo/{id_lista_grupo}")
     fun UpdateEstadoPasarListaGrupo(@Path("id_lista_grupo") idListaGrupo: Int): Call<Void>
 
