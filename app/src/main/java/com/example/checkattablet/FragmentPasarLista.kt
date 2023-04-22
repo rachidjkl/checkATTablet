@@ -45,7 +45,12 @@ class FragmentPasarLista : Fragment() {
 
     fun runAlumnos() = runBlocking {
         listaAlumno = uf?.let { modulo?.let { it1 -> cargarAlumnos(clase, it, it1) } }
-        cargarAlumnosRecycler(listaAlumno)
+        var listaAlumnos = listaAlumno
+
+        if (listaAlumnos != null){
+            cargarAlumnosRecycler(listaAlumnos)
+        }
+
     }
 
 
@@ -67,18 +72,7 @@ class FragmentPasarLista : Fragment() {
         //spinner modulo select
         val value = horarioPasarLista!!.pasarListaGrupo.idModulo
         val modulosSpinner = view.findViewById<Spinner>(R.id.modulos_spinner)
-
-
-
-
         val radioGroup = view.findViewById<RadioGroup>(R.id.myRadioGroup)
-
-
-
-
-
-
-
 
         //modulo spinner
         modulosSpinner.adapter = listaModulos?.let { it.map { it.nombreModulo } }
@@ -99,9 +93,10 @@ class FragmentPasarLista : Fragment() {
 
 
         }
+        //set modulo spinner position
         var position = listaModulos!!.indexOfFirst { it.idModulo == value }
         modulosSpinner.setSelection(position)
-
+        //modulosSpinner.isEnabled = false
 
 
 
@@ -188,11 +183,14 @@ class FragmentPasarLista : Fragment() {
         }
     }
 
-    private fun cargarAlumnosRecycler(listaAlumno: MutableList<Alumno>?) {
+    private fun cargarAlumnosRecycler(listaAlumnos: MutableList<Alumno>) {
 
+        for (alumno in listaAlumnos) {
+            alumno.asistencia = "P"
+        }
         var alumnoId: Alumno? = null
         val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView)
-        val adapter = listaAlumno?.let { ListaAlumnosAdaptador(requireContext(), it) }
+        val adapter = listaAlumno?.let { PasrListaAdapter(requireContext(), it) }
         recyclerView?.hasFixedSize()
         if (recyclerView != null) {
             recyclerView.layoutManager = LinearLayoutManager(requireContext())

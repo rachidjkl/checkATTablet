@@ -68,15 +68,17 @@ class FragmentListasPasadas : Fragment() {
         currentCalendar.set(year, month, dayOfMonth)
 
         // Obtiene el nombre del día de la semana correspondiente a la fecha actual en español
-        val currentDayOfWeek = currentCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale("es", "ES"))
+        var currentDayOfWeek = currentCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale("es", "ES"))
 
         datePickerButton.text = "${dayOfMonth}/${month + 1}/${year}"
         fechaActual.text = "Fecha Actual ${dayOfMonth}/${month + 1}/${year} - $currentDayOfWeek"
 
 
-        val fecha = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
+        var fecha = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
 
-
+        //DELETE THIS SHIT
+        fecha = "2023-04-17"
+        currentDayOfWeek = "lunes"
         callApiUserCep(currentDayOfWeek)
 
 
@@ -145,21 +147,7 @@ class FragmentListasPasadas : Fragment() {
             }.await()
         }
 
-    fun obtenerDiaDeLaSemana(): String {
-        val calendar = Calendar.getInstance()
-        val diaDeLaSemana = calendar.get(Calendar.DAY_OF_WEEK)
 
-        when (diaDeLaSemana) {
-            Calendar.SUNDAY -> return "Domingo"
-            Calendar.MONDAY -> return "Lunes"
-            Calendar.TUESDAY -> return "Martes"
-            Calendar.WEDNESDAY -> return "Miércoles"
-            Calendar.THURSDAY -> return "Jueves"
-            Calendar.FRIDAY -> return "Viernes"
-            Calendar.SATURDAY -> return "Sábado"
-            else -> return "Error"
-        }
-    }
 
 
 
