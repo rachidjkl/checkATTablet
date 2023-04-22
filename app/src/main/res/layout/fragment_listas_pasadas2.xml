@@ -75,7 +75,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/fechaActual2"
+                android:id="@+id/fechaActualPasarLista"
                 style="@style/estiloTexto"
                 android:layout_marginStart="20dp"
                 android:text="24/03/2023"

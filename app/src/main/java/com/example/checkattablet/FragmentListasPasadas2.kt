@@ -32,9 +32,9 @@ class FragmentListasPasadas2 : Fragment() {
 
         val radioGroup = view.findViewById<RadioGroup>(R.id.myRadioGroup)
 
-        val fechaActual2 = view.findViewById<TextView>(R.id.fechaActual2)
-        val cal = Calendar.getInstance()
-        fechaActual2.text = "${cal.get(Calendar.DAY_OF_MONTH)}/${cal.get(Calendar.MONTH) + 1}/${cal.get(Calendar.YEAR)}"
+        //val fechaActual2 = view.findViewById<TextView>(R.id.fechaActual2)
+       // val cal = Calendar.getInstance()
+        //fechaActual2.text = "${cal.get(Calendar.DAY_OF_MONTH)}/${cal.get(Calendar.MONTH) + 1}/${cal.get(Calendar.YEAR)}"
 
         val grupo = arguments?.getSerializable("listaGrupo") as? ListaGrupo
         var nombreProfe = view.findViewById<TextView>(R.id.nombreProfesor)

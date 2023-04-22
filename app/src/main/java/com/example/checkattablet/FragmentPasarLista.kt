@@ -14,9 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.checkattablet.ApiAcces.ApiGets
 import com.example.checkattablet.ApiAcces.RetrofitClient
 import com.example.checkattablet.DataModel.Horario
+import com.example.checkattablet.PasarLista.FragmentListasPasadas
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class FragmentPasarLista : Fragment() {
@@ -26,6 +29,12 @@ class FragmentPasarLista : Fragment() {
     var listaAlumno: MutableList<Alumno>? = null
     var listaModulos: MutableList<Modulo>? = mutableListOf()
     var listaUfs: MutableList<Uf>? = null
+
+    var alumnoSeleccionado: Alumno? = null
+    var adapter: PasrListaAdapter? = null
+    var selectedRadioButtonText = ""
+
+
 
     var clase = 130002
     var modulo: Int? = null
@@ -53,6 +62,12 @@ class FragmentPasarLista : Fragment() {
 
     }
 
+    fun getFechaActual(): String {
+        val cal = Calendar.getInstance()
+        val formatoFecha = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        return formatoFecha.format(cal.time)
+    }
+
 
 
     override fun onCreateView(
@@ -68,6 +83,14 @@ class FragmentPasarLista : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         horarioPasarLista = arguments?.getSerializable("horarioPasarLista") as? Horario
 
+
+        //dia
+        var fechaActualPasarLista = view.findViewById<TextView>(R.id.fechaActualPasarLista)
+        //fechaActualPasarLista.setText(getFechaActual())
+
+        //hora
+        var horarioText = view.findViewById<TextView>(R.id.textViewHorasSeleccionadas)
+        horarioText.setText("Hora: "+horarioPasarLista!!.horaInicio.substring(0, 5) + " : "+horarioPasarLista!!.horaFin.substring(0, 5))
 
         //spinner modulo select
         val value = horarioPasarLista!!.pasarListaGrupo.idModulo
@@ -96,67 +119,64 @@ class FragmentPasarLista : Fragment() {
         //set modulo spinner position
         var position = listaModulos!!.indexOfFirst { it.idModulo == value }
         modulosSpinner.setSelection(position)
-        //modulosSpinner.isEnabled = false
+        modulosSpinner.isEnabled = false
 
 
 
-        radioGroup.setOnCheckedChangeListener { group, checkedId ->
-            /*val radioButton = view.findViewById<RadioButton>(checkedId)
+        radioGroup.setOnCheckedChangeListener { _, checkedId ->
+            val radioButton = view.findViewById<RadioButton>(checkedId)
             if (radioButton != null) {
                 when(radioButton.text.toString()) {
                     "Presente" -> {
-                        alumnoId?.asistencia = "P"
+                        selectedRadioButtonText = "P"
                     }
                     "Retraso" -> {
-                        alumnoId?.asistencia = "R"
+                        selectedRadioButtonText =  "R"
                     }
                     "Falta Justificada" -> {
-                        alumnoId?.asistencia = "FJ"
+                        selectedRadioButtonText = "FJ"
                     }
                     "Falta Injustificada" -> {
-                        alumnoId?.asistencia = "FI"
+                        selectedRadioButtonText = "FI"
                     }
                     "Irse antes de acabar" -> {
-                        alumnoId?.asistencia = "Irse antes de acabar"
+                        selectedRadioButtonText = "IA"
                     }
                     else ->{
-                        alumnoId?.asistencia = ""
+                        selectedRadioButtonText = "Error"
                     }
                 }
-
-                // Set the appropriate radio button for the next element's attendance
-                when (alumnoId?.asistencia) {
-                    "P" -> {
-                        radioGroup.check(R.id.radioButtonPresente)
-                    }
-                    "R" -> {
-                        radioGroup.check(R.id.radioButtonRetraso)
-                    }
-                    "FI" -> {
-                        radioGroup.check(R.id.radioButtonFaltaI)
-                    }
-                    "FJ" -> {
-                        radioGroup.check(R.id.radioButtonFaltaJ)
-                    }
-                    "Irse antes de acabar" -> {
-                        radioGroup.check(R.id.radioButtonIrseAntes)
-                    }
-                    else -> {
-                        radioGroup.clearCheck()
-                    }
-                }
-                adapter.selectedItem = alumnoId
-                adapter.notifyDataSetChanged()
-
-            } else {
-                alumnoId?.asistencia = ""
-
-            }*/
+            }
+            alumnoSeleccionado?.asistencia = selectedRadioButtonText
+            var klk = listaAlumno
+            adapter?.notifyDataSetChanged()
         }
 
 
 
 
+
+    }
+
+    private fun cargarAlumnosRecycler(listaAlumnos: MutableList<Alumno>) {
+
+        for (alumno in listaAlumnos) {
+            alumno.asistencia = "P"
+        }
+
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView)
+        recyclerView?.hasFixedSize()
+        recyclerView?.layoutManager = LinearLayoutManager(requireContext())
+
+        adapter = PasrListaAdapter(requireContext(), listaAlumnos)
+        recyclerView?.adapter = adapter
+
+        adapter?.setOnClickListener {
+            val alumnoSeleccionadoRecyclerView = listaAlumnos[recyclerView!!.getChildAdapterPosition(it)]
+            alumnoSeleccionado = listaAlumnos.find { alumno -> alumno.idAlumno == alumnoSeleccionadoRecyclerView.idAlumno }
+            adapter?.selectedItem = alumnoSeleccionadoRecyclerView
+            adapter?.notifyDataSetChanged()
+        }
     }
 
     private fun llenarSpinnerUf(listaUfs: MutableList<Uf>?) {
@@ -183,33 +203,7 @@ class FragmentPasarLista : Fragment() {
         }
     }
 
-    private fun cargarAlumnosRecycler(listaAlumnos: MutableList<Alumno>) {
 
-        for (alumno in listaAlumnos) {
-            alumno.asistencia = "P"
-        }
-        var alumnoId: Alumno? = null
-        val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView)
-        val adapter = listaAlumno?.let { PasrListaAdapter(requireContext(), it) }
-        recyclerView?.hasFixedSize()
-        if (recyclerView != null) {
-            recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        }
-        if (recyclerView != null) {
-            recyclerView.adapter = adapter
-        }
-
-        adapter?.setOnClickListener {
-
-            val alumnoSeleccionado = recyclerView?.let { it1 -> listaAlumno?.get(it1.getChildAdapterPosition(it)) }
-            if (alumnoSeleccionado != null) {
-                alumnoId = listaAlumno?.find { Alumno -> Alumno.idAlumno.equals(alumnoSeleccionado.idAlumno) }
-            }
-            adapter.selectedItem = alumnoSeleccionado
-            adapter.notifyDataSetChanged()
-
-        }
-    }
 
     suspend fun cargarAlumnos(clase : Int, uf : Int, modulo: Int): MutableList<Alumno>? {
 

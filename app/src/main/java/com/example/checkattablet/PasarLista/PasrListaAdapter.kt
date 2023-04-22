@@ -76,7 +76,7 @@ class PasrListaAdapter (private val context: Context,
             "FI" -> {
                 holder.asistenca?.setBackgroundResource(R.drawable.fondo_rojo)
             }
-            "Irse antes de acabar" -> {
+            "IA" -> {
                 holder.asistenca?.setBackgroundResource(R.drawable.fondo_amarillo)
             }
             else -> {
