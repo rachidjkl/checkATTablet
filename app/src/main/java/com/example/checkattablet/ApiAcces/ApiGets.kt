@@ -1,12 +1,9 @@
 package com.example.checkattablet.ApiAcces
 
 import Alumno
-import com.example.checkattablet.DataModel.Horario
-import com.example.checkattablet.DataModel.PasarLista
-import com.example.checkattablet.DataModel.PasarListaGrupo
-import com.example.checkattablet.DataModel.Profesor
 import Modulo
 import Uf
+import com.example.checkattablet.DataModel.*
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -51,6 +48,9 @@ interface ApiGets {
 
     @POST("api/Pasar_Lista/{Pasar_Lista}")
     fun InsertPasarLista(@Body pasarLista: PasarLista): Call<Void>
+
+    @GET("api/ClasesPers")
+    fun getAllClasses(): Call<List<ClasePers>>
 
 
 }

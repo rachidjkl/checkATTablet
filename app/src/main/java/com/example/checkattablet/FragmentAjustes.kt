@@ -7,23 +7,77 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.fragment.findNavController
+import com.example.checkattablet.ApiAcces.ApiGets
+import com.example.checkattablet.ApiAcces.RetrofitClient
+import com.example.checkattablet.DataModel.ClasePers
+import com.example.checkattablet.PasarLista.AdapterClases
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.*
 
 
 class FragmentAjustes : Fragment() {
+
+    private var allClases: List<ClasePers>? = null
+
+    init {
+        main()
+    }
+    fun main() = runBlocking {
+        allClases = globalFun()
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflar el layout del fragmento
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         return inflater.inflate(R.layout.fragment_ajustes, container, false)
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -74,9 +128,17 @@ class FragmentAjustes : Fragment() {
             startActivity(intent)
             requireActivity().finish()
         }
+    }
 
 
 
+    private suspend fun globalFun(): List<ClasePers>? {
+        val userCepApi = RetrofitClient.getInstance().create(ApiGets::class.java)
+        return GlobalScope.async {
+            val call = userCepApi.getAllClasses()
+            val response = call.execute()
+            response.body()
+        }.await()
     }
 
 
