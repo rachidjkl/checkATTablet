@@ -13,10 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.checkattablet.ApiAcces.ApiGets
 import com.example.checkattablet.ApiAcces.RetrofitClient
+import com.example.checkattablet.DataModel.Falta
 import com.example.checkattablet.DataModel.Horario
+import com.example.checkattablet.DataModel.PasarLista
 import com.example.checkattablet.PasarLista.FragmentListasPasadas
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.util.*
@@ -26,6 +29,7 @@ class FragmentPasarLista : Fragment() {
 
     var horarioPasarLista: Horario? = null;
 
+    var ListaPasadaAlumnos =  mutableListOf<PasarLista>()
     var listaAlumno: MutableList<Alumno>? = null
     var listaModulos: MutableList<Modulo>? = mutableListOf()
     var listaUfs: MutableList<Uf>? = null
@@ -85,8 +89,8 @@ class FragmentPasarLista : Fragment() {
 
 
         //dia
-        var fechaActualPasarLista = view.findViewById<TextView>(R.id.fechaActualPasarLista)
-        //fechaActualPasarLista.setText(getFechaActual())
+        var fechaActualPasarLista = view.findViewById<TextView>(R.id.fechaPasarLista)
+        fechaActualPasarLista.setText(getFechaActual())
 
         //hora
         var horarioText = view.findViewById<TextView>(R.id.textViewHorasSeleccionadas)
@@ -148,8 +152,24 @@ class FragmentPasarLista : Fragment() {
                 }
             }
             alumnoSeleccionado?.asistencia = selectedRadioButtonText
-            var klk = listaAlumno
             adapter?.notifyDataSetChanged()
+        }
+
+        val pasarListaButton = view.findViewById<Button>(R.id.buttonValidarLista)
+
+        pasarListaButton.setOnClickListener(){
+            var listaAlumnos = listaAlumno!!
+
+
+            for (alumno in listaAlumnos) {
+                var pasarListaAlumno : PasarLista = PasarLista(null, alumno.idAlumno,horarioPasarLista!!.idHorario,uf!!
+                ,horarioPasarLista!!.pasarListaGrupo.fecha,alumno.asistencia,1,horarioPasarLista!!.pasarListaGrupo.idListaGrupo!!)
+
+                ListaPasadaAlumnos.add(pasarListaAlumno)
+            }
+            insertPasarListaList(ListaPasadaAlumnos)
+            //el profe tambien se tendra que actuaolizar
+            updateListaPasadaGrupoNoPasadaToPasada(horarioPasarLista!!.pasarListaGrupo.idListaGrupo!!,10006)  //profe prueba
         }
 
 
@@ -236,6 +256,36 @@ class FragmentPasarLista : Fragment() {
             val response = call.execute()
             response.body()
         }.await()
+    }
+
+    fun insertPasarListaList(lista: MutableList<PasarLista>) {
+
+        val userCepApi = RetrofitClient.getInstance().create(ApiGets::class.java)
+
+        GlobalScope.launch() {
+            val call = userCepApi.InsertPasarLista(lista)
+            val response = call.execute()
+
+            if (response.code() != 204) {
+               // Toast.makeText(requireActivity(), "Error al pasar Lista", Toast.LENGTH_SHORT).show()
+
+            } else {
+                // Toast.makeText(requireActivity(), "Se ha pasado lista", Toast.LENGTH_SHORT).show()
+            }
+
+
+        }
+    }
+        fun updateListaPasadaGrupoNoPasadaToPasada(idListaGrupo: Int, idProfe: Int) {
+
+        val userCepApi = RetrofitClient.getInstance().create(ApiGets::class.java)
+
+        GlobalScope.launch() {
+            val call = userCepApi.UpdateEstadoPasarListaGrupo(idListaGrupo,idProfe)
+            val response = call.execute()
+
+        }
+
     }
 
 }

@@ -94,7 +94,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textopuerba"
+                android:id="@+id/fechaPasarLista"
                 style="@style/estiloTexto"
                 android:layout_marginStart="20dp"
                 android:text="24/03/2023"
@@ -163,6 +163,7 @@
             </RadioGroup>
 
             <Button
+                android:id="@+id/buttonValidarLista"
                 style="@style/estiloBotonPrincipal"
                 android:text="VALIDAR >>"
                 app:backgroundTint="@null"

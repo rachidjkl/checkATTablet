@@ -77,8 +77,8 @@ class FragmentListasPasadas : Fragment() {
         var fecha = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
 
         //DELETE THIS SHIT
-        fecha = "2023-04-17"
-        currentDayOfWeek = "lunes"
+        //fecha = "2023-04-17"
+        //currentDayOfWeek = "lunes"
         callApiUserCep(currentDayOfWeek)
 
 

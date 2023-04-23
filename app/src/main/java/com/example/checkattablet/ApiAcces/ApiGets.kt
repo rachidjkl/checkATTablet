@@ -46,11 +46,11 @@ interface ApiGets {
     fun InsertPasarListaGrupo(@Body pasarListaGrupo: PasarListaGrupo): Call<Void>
 
     //update estado a true
-    @POST("api/Pasar_listas_grupo/setEstadoTrue/id_lista_grupo/{id_lista_grupo}")
-    fun UpdateEstadoPasarListaGrupo(@Path("id_lista_grupo") idListaGrupo: Int): Call<Void>
+    @POST("api/Pasar_listas_grupo/setEstadoTrue/id_lista_grupo/{id_lista_grupo}/id_profe/{id_profe}")
+    fun UpdateEstadoPasarListaGrupo(@Path("id_lista_grupo") idListaGrupo: Int, @Path("id_profe") idProfe: Int): Call<Void>
 
-    @POST("api/Pasar_Lista/{Pasar_Lista}")
-    fun InsertPasarLista(@Body pasarLista: PasarLista): Call<Void>
+    @POST("api/Pasar_Lista")
+    fun InsertPasarLista(@Body pasarLista: List<PasarLista>): Call<Void>
 
 
 }

@@ -2,7 +2,7 @@ package com.example.checkattablet.DataModel
 
 import com.google.gson.annotations.SerializedName
 
-data class PasarLista (@SerializedName("id_pasar_lista") var id_pasar_lista: Int,
+data class PasarLista (@SerializedName("id_pasar_lista") var id_pasar_lista: Int?,
                        @SerializedName("id_alumno") var idAlumno: Int,
                        @SerializedName("id_horario") var idHorario: Int,
                        @SerializedName("id_uf") var idUf: Int,

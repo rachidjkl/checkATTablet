@@ -144,6 +144,7 @@
             </RadioGroup>
 
             <Button
+
                 style="@style/estiloBotonPrincipal"
                 android:text="VALIDAR >>"
                 app:backgroundTint="@null"
