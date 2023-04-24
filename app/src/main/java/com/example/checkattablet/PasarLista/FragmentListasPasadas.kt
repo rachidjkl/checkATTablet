@@ -71,7 +71,7 @@ class FragmentListasPasadas : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val klk = view.findViewById<Button>(R.id.klk)
+        val refreshButton = view.findViewById<Button>(R.id.refresh)
         val datePickerButton = view.findViewById<Button>(R.id.date_picker_button)
         val fechaActual = view.findViewById<TextView>(R.id.fechaActual)
         val cal = Calendar.getInstance()
@@ -107,7 +107,7 @@ class FragmentListasPasadas : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
 
-        klk.setOnClickListener(){
+        refreshButton.setOnClickListener(){
             callApiUserCep(diaSemanaBusqueda)
             adapter.notifyDataSetChanged()
             val recyclerView2 = view.findViewById<RecyclerView>(R.id.recyclerViewListasPasadas)
@@ -116,6 +116,8 @@ class FragmentListasPasadas : Fragment() {
             recyclerView2.hasFixedSize()
             recyclerView2.layoutManager = LinearLayoutManager(requireContext())
             recyclerView2.adapter = adapter2
+
+
         }
 
         adapter.setOnClickListener {
@@ -160,8 +162,10 @@ class FragmentListasPasadas : Fragment() {
                     diaSemanaBusqueda = obtenerDiaSemana(fecha)
                 },
                 year, month, dayOfMonth
+
             )
             datePicker.show()
+
         }
 
 
