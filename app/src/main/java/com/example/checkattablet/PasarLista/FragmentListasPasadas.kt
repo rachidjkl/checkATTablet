@@ -1,6 +1,7 @@
 package com.example.checkattablet.PasarLista
 
 import android.app.DatePickerDialog
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,6 +19,9 @@ import com.example.checkattablet.DataModel.Horario
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
 import java.util.*
 
 
@@ -27,7 +31,9 @@ class FragmentListasPasadas : Fragment() {
         lateinit var listaHorariosDiaClase: List<Horario>
     }
 
-    private val date: String = ""
+    private lateinit var listaHorariosDiaSeleccionado: List<Horario>
+
+    private var diaSemanaBusqueda: String = ""
 
     fun callApiUserCep(diaSemana: String) = runBlocking {
         var listHoraios = globalFun1(diaSemana)
@@ -38,6 +44,17 @@ class FragmentListasPasadas : Fragment() {
             listaHorariosDiaClase = listHoraios
         }
     }
+    fun convertirFecha(fecha: String): String {
+        val formatoEntrada = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            DateTimeFormatter.ofPattern("d/M/yyyy")
+        } else {
+            TODO("VERSION.SDK_INT < O")
+        }
+        val fechaEntrada = LocalDate.parse(fecha, formatoEntrada)
+        val formatoSalida = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        return fechaEntrada.format(formatoSalida)
+    }
+
 
 
         override fun onCreateView(
@@ -54,6 +71,7 @@ class FragmentListasPasadas : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val klk = view.findViewById<Button>(R.id.klk)
         val datePickerButton = view.findViewById<Button>(R.id.date_picker_button)
         val fechaActual = view.findViewById<TextView>(R.id.fechaActual)
         val cal = Calendar.getInstance()
@@ -82,38 +100,23 @@ class FragmentListasPasadas : Fragment() {
         callApiUserCep(currentDayOfWeek)
 
 
-        datePickerButton.setOnClickListener {
-
-            val datePicker = DatePickerDialog(
-                requireContext(),
-                { _, selectedYear, selectedMonth, selectedDayOfMonth ->
-                    // Aquí se ejecutará el código cuando el usuario seleccione una fecha
-                    val selectedDate = "${selectedDayOfMonth}/${selectedMonth + 1}/${selectedYear}"
-
-                    // Crea un objeto Calendar para la fecha seleccionada
-                    val selectedCalendar = Calendar.getInstance()
-                    selectedCalendar.set(selectedYear, selectedMonth, selectedDayOfMonth)
-
-                    // Obtiene el nombre del día de la semana correspondiente a la fecha seleccionada
-                    val selectedDayOfWeek = selectedCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault())
-
-                    datePickerButton.text = selectedDate
-                    fechaActual.text = "Fecha Actual ${selectedDate} - ${selectedDayOfWeek}"
-                },
-                year, month, dayOfMonth
-            )
-
-            datePicker.show()
-        }
-
-
-
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewListasPasadas)
 
         val adapter = ListasPasadasAdaptador(requireContext(), listaHorariosDiaClase,fecha)
         recyclerView.hasFixedSize()
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
+
+        klk.setOnClickListener(){
+            callApiUserCep(diaSemanaBusqueda)
+            adapter.notifyDataSetChanged()
+            val recyclerView2 = view.findViewById<RecyclerView>(R.id.recyclerViewListasPasadas)
+
+            val adapter2 = ListasPasadasAdaptador(requireContext(), listaHorariosDiaClase,fecha)
+            recyclerView2.hasFixedSize()
+            recyclerView2.layoutManager = LinearLayoutManager(requireContext())
+            recyclerView2.adapter = adapter2
+        }
 
         adapter.setOnClickListener {
 
@@ -134,6 +137,44 @@ class FragmentListasPasadas : Fragment() {
             fragmentTransaction.commit()
         }
 
+        datePickerButton.setOnClickListener {
+
+            val datePicker = DatePickerDialog(
+                requireContext(),
+                { _, selectedYear, selectedMonth, selectedDayOfMonth ->
+                    // Aquí se ejecutará el código cuando el usuario seleccione una fecha
+                    val selectedDate = "${selectedDayOfMonth}/${selectedMonth + 1}/${selectedYear}"
+
+                    // Crea un objeto Calendar para la fecha seleccionada
+                    val selectedCalendar = Calendar.getInstance()
+                    selectedCalendar.set(selectedYear, selectedMonth, selectedDayOfMonth)
+
+                    // Obtiene el nombre del día de la semana correspondiente a la fecha seleccionada
+                    val selectedDayOfWeek = selectedCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault())
+
+
+                    fechaActual.text = "Fecha Actual ${selectedDate} - ${selectedDayOfWeek}"
+                    datePickerButton.text = selectedDate
+
+                    fecha = convertirFecha(selectedDate)
+                    diaSemanaBusqueda = obtenerDiaSemana(fecha)
+                },
+                year, month, dayOfMonth
+            )
+            datePicker.show()
+        }
+
+
+    }
+
+    fun obtenerDiaSemana(fecha: String): String {
+        val formatoEntrada = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        } else {
+            TODO("VERSION.SDK_INT < O")
+        }
+        val fechaLocal = LocalDate.parse(fecha, formatoEntrada)
+        return fechaLocal.dayOfWeek.getDisplayName(TextStyle.FULL, Locale("es", "ES"))
     }
 
         private suspend fun globalFun1(diaSemana :String ):List<Horario>? {
