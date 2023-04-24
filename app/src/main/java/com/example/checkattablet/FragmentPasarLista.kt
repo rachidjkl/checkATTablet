@@ -86,11 +86,11 @@ class FragmentPasarLista : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         horarioPasarLista = arguments?.getSerializable("horarioPasarLista") as? Horario
-
+        var fecha =  arguments?.getSerializable("fecha") as? String
 
         //dia
         var fechaActualPasarLista = view.findViewById<TextView>(R.id.fechaPasarLista)
-        fechaActualPasarLista.setText(getFechaActual())
+        fechaActualPasarLista.setText(fecha)
 
         //hora
         var horarioText = view.findViewById<TextView>(R.id.textViewHorasSeleccionadas)
@@ -188,7 +188,7 @@ class FragmentPasarLista : Fragment() {
         recyclerView?.hasFixedSize()
         recyclerView?.layoutManager = LinearLayoutManager(requireContext())
 
-        adapter = PasrListaAdapter(requireContext(), listaAlumnos)
+        adapter = PasrListaAdapter(requireContext(), listaAlumnos )
         recyclerView?.adapter = adapter
 
         adapter?.setOnClickListener {

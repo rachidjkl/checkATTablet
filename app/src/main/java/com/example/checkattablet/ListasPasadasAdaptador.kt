@@ -25,6 +25,7 @@ class ListasPasadasAdaptador (private val context: Context,
     private var clickLongListener: View.OnLongClickListener? = null
     private var pasarListaGrupoAux: PasarListaGrupo? = null
     private var profesorLista: Profesor? = null
+    private var profeListaNoPasada: String = "-"
 
 
 
@@ -33,7 +34,7 @@ class ListasPasadasAdaptador (private val context: Context,
         var pasarListaGrupo = globalFunGet(horario.idHorario, fecha)
 
         if (pasarListaGrupo == null) {
-            var newPasarListaGrupo = PasarListaGrupo(null,horario.horaInicio,horario.horaFin,horario.idModulo,10005,horario.idHorario,fecha,0)
+            var newPasarListaGrupo = PasarListaGrupo(null,horario.horaInicio,horario.horaFin,horario.idModulo,0,horario.idHorario,fecha,0)
 
             globalFunCreatePasarListaGrupo(newPasarListaGrupo)
             pasarListaGrupo = globalFunGet(horario.idHorario, fecha)
@@ -91,12 +92,18 @@ class ListasPasadasAdaptador (private val context: Context,
 
         callApiPasarListaGrupo(horario, fecha);
         horario.pasarListaGrupo = pasarListaGrupoAux!!
-        callApiProfesor(pasarListaGrupoAux!!.idProfe)
+        if (pasarListaGrupoAux!!.idProfe!! != 0){
+            callApiProfesor(pasarListaGrupoAux!!.idProfe!!)
+            holder.nombreProfe?.text = profesorLista!!.nombreProfesor +" "+profesorLista!!.apellido1Profe
+        }else{
+            holder.nombreProfe?.text = profeListaNoPasada
+        }
+
 
 
         holder.horaClase?.text = horaInicio + "-" + horaFin
         holder.idModulo?.text = horario.siglasUf // en realidad son siglas modulo
-        holder.nombreProfe?.text = profesorLista!!.nombreProfesor +" "+profesorLista!!.apellido1Profe
+
         holder.estadoLista?.text = if (pasarListaGrupoAux!!.estado == 0) "No Pasada" else "Pasada"
         if (pasarListaGrupoAux!!.estado == 0) {
             holder.estadoLista?.setBackgroundResource(R.drawable.fondo_rojo)

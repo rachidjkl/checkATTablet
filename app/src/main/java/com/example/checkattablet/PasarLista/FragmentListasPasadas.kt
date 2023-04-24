@@ -29,11 +29,10 @@ class FragmentListasPasadas : Fragment() {
 
     companion object{
         lateinit var listaHorariosDiaClase: List<Horario>
+        lateinit var  diaSemanaBusqueda: String
+        var fecha: String = ""
     }
 
-    private lateinit var listaHorariosDiaSeleccionado: List<Horario>
-
-    private var diaSemanaBusqueda: String = ""
 
     fun callApiUserCep(diaSemana: String) = runBlocking {
         var listHoraios = globalFun1(diaSemana)
@@ -76,23 +75,31 @@ class FragmentListasPasadas : Fragment() {
         val fechaActual = view.findViewById<TextView>(R.id.fechaActual)
         val cal = Calendar.getInstance()
 
-        // Obtiene la fecha actual
-        val year = cal.get(Calendar.YEAR)
-        val month = cal.get(Calendar.MONTH)
-        val dayOfMonth = cal.get(Calendar.DAY_OF_MONTH)
 
-        // Crea un objeto Calendar para la fecha actual
-        val currentCalendar = Calendar.getInstance()
-        currentCalendar.set(year, month, dayOfMonth)
+            // Obtiene la fecha actual
+            val year = cal.get(Calendar.YEAR)
+            val month = cal.get(Calendar.MONTH)
+            val dayOfMonth = cal.get(Calendar.DAY_OF_MONTH)
 
-        // Obtiene el nombre del día de la semana correspondiente a la fecha actual en español
-        var currentDayOfWeek = currentCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale("es", "ES"))
+            // Crea un objeto Calendar para la fecha actual
+            val currentCalendar = Calendar.getInstance()
+            currentCalendar.set(year, month, dayOfMonth)
 
-        datePickerButton.text = "${dayOfMonth}/${month + 1}/${year}"
-        fechaActual.text = "Fecha Actual ${dayOfMonth}/${month + 1}/${year} - $currentDayOfWeek"
+            // Obtiene el nombre del día de la semana correspondiente a la fecha actual en español
+            var currentDayOfWeek = currentCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale("es", "ES"))
 
 
-        var fecha = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
+            datePickerButton.text = "${dayOfMonth}/${month + 1}/${year}"
+            fechaActual.text = "Fecha Actual ${dayOfMonth}/${month + 1}/${year} - $currentDayOfWeek"
+
+            if (fecha == ""){
+                fecha = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
+            }
+
+
+
+
+
 
         //DELETE THIS SHIT
         //fecha = "2023-04-17"
@@ -100,24 +107,37 @@ class FragmentListasPasadas : Fragment() {
         callApiUserCep(currentDayOfWeek)
 
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewListasPasadas)
+        var recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewListasPasadas)
 
-        val adapter = ListasPasadasAdaptador(requireContext(), listaHorariosDiaClase,fecha)
+        var adapter = ListasPasadasAdaptador(requireContext(), listaHorariosDiaClase,fecha)
         recyclerView.hasFixedSize()
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
 
         refreshButton.setOnClickListener(){
             callApiUserCep(diaSemanaBusqueda)
-            adapter.notifyDataSetChanged()
-            val recyclerView2 = view.findViewById<RecyclerView>(R.id.recyclerViewListasPasadas)
+            val updatedAdapter = ListasPasadasAdaptador(requireContext(), listaHorariosDiaClase, fecha)
+            recyclerView.adapter = updatedAdapter
+            updatedAdapter.notifyDataSetChanged()
+            updatedAdapter.setOnClickListener {
 
-            val adapter2 = ListasPasadasAdaptador(requireContext(), listaHorariosDiaClase,fecha)
-            recyclerView2.hasFixedSize()
-            recyclerView2.layoutManager = LinearLayoutManager(requireContext())
-            recyclerView2.adapter = adapter2
+                var horarioPasarLista = listaHorariosDiaClase[recyclerView.getChildAdapterPosition(it)]
+                val bundle = Bundle()
+                bundle.putSerializable("horarioPasarLista", horarioPasarLista)
+                bundle.putSerializable("fecha", fecha)
 
+                val fragmentoPasarLista = FragmentPasarLista()
+                fragmentoPasarLista.arguments = bundle
+                val fragmentManager = requireActivity().supportFragmentManager
+                val fragmentTransaction = fragmentManager.beginTransaction()
 
+                // Agregar el fragmento actual a la pila de fragmentos
+                fragmentTransaction.addToBackStack(null)
+
+                // Reemplazar el fragmento actual con el FragmentListasPasadas2
+                fragmentTransaction.replace(R.id.fragmentooo, fragmentoPasarLista)
+                fragmentTransaction.commit()
+            }
         }
 
         adapter.setOnClickListener {
@@ -125,6 +145,7 @@ class FragmentListasPasadas : Fragment() {
             var horarioPasarLista = listaHorariosDiaClase[recyclerView.getChildAdapterPosition(it)]
             val bundle = Bundle()
             bundle.putSerializable("horarioPasarLista", horarioPasarLista)
+            bundle.putSerializable("fecha", fecha)
 
             val fragmentoPasarLista = FragmentPasarLista()
             fragmentoPasarLista.arguments = bundle

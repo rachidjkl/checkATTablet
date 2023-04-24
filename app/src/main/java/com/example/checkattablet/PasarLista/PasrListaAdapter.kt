@@ -10,8 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
-class PasrListaAdapter (private val context: Context,
-                                          private val listaAlumnos: MutableList<Alumno>):
+class PasrListaAdapter (private val context: Context, private val listaAlumnos: MutableList<Alumno>):
     RecyclerView.Adapter<PasrListaAdapter.AlumnosViewHolder>(),
     View.OnClickListener, View.OnLongClickListener{
 
@@ -60,7 +59,7 @@ class PasrListaAdapter (private val context: Context,
 
     fun bindPaquete(holder: AlumnosViewHolder, alumno: Alumno) {
 
-        holder.nombreAlumno?.text = alumno.nombreAlumno
+        holder.nombreAlumno?.text = alumno.nombreAlumno + " "+ alumno.apellido1Alumno  + " " + alumno.apellido2Alumno
         holder.asistenca?.text = alumno.asistencia
 
         when(alumno.asistencia) {
