@@ -3,6 +3,7 @@ package com.example.checkattablet.PasarLista
 import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -115,19 +116,18 @@ class FragmentListasPasadas : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
 
-        var cargandoScreen = view.findViewById<LinearLayout>(R.id.cargandoLayout)
-        cargandoScreen.visibility = View.GONE
+
 
 
         refreshButton.setOnClickListener(){
-
-            cargandoScreen.visibility = View.VISIBLE
+            //carga screen
+            ocultarCargandoScreen(view)
 
             callApiUserCep(diaSemanaBusqueda)
             val updatedAdapter = ListasPasadasAdaptador(requireContext(), listaHorariosDiaClase, fecha)
             recyclerView.adapter = updatedAdapter
             updatedAdapter.notifyDataSetChanged()
-            cargandoScreen.visibility = View.GONE
+
 
             updatedAdapter.setOnClickListener {
 
@@ -222,6 +222,15 @@ class FragmentListasPasadas : Fragment() {
                 response.body()
             }.await()
         }
+
+    fun ocultarCargandoScreen(view: View) {
+        var cargandoScreen = view.findViewById<LinearLayout>(R.id.cargandoLayout2)
+        cargandoScreen.visibility = View.VISIBLE
+
+        Handler().postDelayed({
+            cargandoScreen.visibility = View.GONE
+        }, 2000) // 2000 milisegundos = 2 segundos
+    }
 
 
 

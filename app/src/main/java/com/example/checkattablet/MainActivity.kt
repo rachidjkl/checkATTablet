@@ -2,6 +2,7 @@ package com.example.checkattablet
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -15,6 +16,10 @@ class MainActivity : AppCompatActivity() {
 
         var profeNombreLogIn = findViewById<TextView>(R.id.profeNombreLogIn)
         profeNombreLogIn.text = Login.userProfe.nombreProfe
+
+
+        var cargandoScreen = findViewById<LinearLayout>(R.id.cargandoLayout)
+        cargandoScreen.visibility = View.GONE
 
         val constLayutListasPasadas = findViewById<ConstraintLayout>(R.id.ConstListasPasadas)
         val constLayutAjustes       = findViewById<ConstraintLayout>(R.id.ConstAjustes)
@@ -31,9 +36,20 @@ class MainActivity : AppCompatActivity() {
         constLayutAjustes.setOnClickListener { onConstraintClick(constLayutAjustes, linearListasPasadas, linearAjustes) }
     }
 
+
+    fun ocultarCargandoScreen() {
+        var cargandoScreen = findViewById<LinearLayout>(R.id.cargandoLayout)
+        cargandoScreen.visibility = View.VISIBLE
+
+        Handler().postDelayed({
+            cargandoScreen.visibility = View.GONE
+        }, 2000) // 2000 milisegundos = 2 segundos
+    }
+
     private fun onConstraintClick(constLayut: ConstraintLayout,lnr2: LinearLayout, lnr3: LinearLayout) {
         when (constLayut.id) {
             R.id.ConstListasPasadas -> {
+                ocultarCargandoScreen()
                 val fragmentoListasPasadas = FragmentListasPasadas()
                 val fragmentManager = supportFragmentManager
                 val fragmentTransaction = fragmentManager.beginTransaction()

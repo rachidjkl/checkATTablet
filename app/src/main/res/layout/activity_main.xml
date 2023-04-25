@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -62,7 +62,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="80dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout2"
@@ -212,5 +214,19 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/cargandoLayout"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grisClaro"
+        android:gravity="center">
+        <TextView
+            style="@style/estiloTexto"
+            android:text="Cargando..."
+            android:textSize="50sp" />
 
-</LinearLayout>
+    </LinearLayout>
+
+
+</FrameLayout>
