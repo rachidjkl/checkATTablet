@@ -16,8 +16,8 @@
         <ImageView
             android:layout_width="40dp"
             android:layout_height="60dp"
-            android:src="@drawable/logo_blanco"
             android:layout_marginLeft="25dp"
+            android:src="@drawable/logo_blanco"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/textView"
             app:layout_constraintHorizontal_bias="0"
@@ -43,16 +43,16 @@
 
         <TextView
             style="@style/texto_barras"
-            android:layout_marginStart="1020dp"
+            android:layout_marginStart="908dp"
             android:text="@string/bienvenido"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/profeNombreLogIn"
             style="@style/texto_barras"
-            android:layout_marginStart="1150dp"
-            android:text="Jose Luis"
+            android:layout_marginStart="1048dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -70,77 +70,29 @@
             android:layout_height="match_parent"
             android:background="@color/grisOscuro">
 
+
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/ConstPasarLista"
+                android:id="@+id/ConstListasPasadas"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
-                    android:id="@+id/lnrPasarLista"
-                    android:layout_width="4dp"
-                    android:layout_height="50dp"
-                    android:background="@color/white"
-                    app:layout_constraintBottom_toBottomOf="@+id/imagen1"
-                    app:layout_constraintEnd_toStartOf="@+id/imagen1"
-                    app:layout_constraintHorizontal_bias="0.273"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/imagen1"
-                    app:layout_constraintVertical_bias="0.221"
-                    android:orientation="horizontal" />
-
-                <ImageView
-                    android:id="@+id/imagen1"
-                    android:layout_width="38dp"
-                    android:layout_height="47dp"
-                    android:layout_marginStart="32dp"
-                    android:src="@drawable/pasarlista"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-                <TextView
-                    android:id="@+id/textView1"
-                    style="@style/texto_apartados"
-                    android:text="Pasar lista"
-                    android:layout_marginLeft="13dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/imagen1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0"
-                    app:layout_constraintStart_toEndOf="@+id/imagen1"
-                    app:layout_constraintTop_toTopOf="@+id/imagen1"
-                    app:layout_constraintVertical_bias="0.535" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/ConstListasPasadas"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ConstPasarLista"
-                android:layout_marginTop="20dp">
-
-                <LinearLayout
                     android:id="@+id/lnrListasPasadas"
                     android:layout_width="4dp"
                     android:layout_height="50dp"
                     android:background="@color/white"
+                    android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="@+id/imagenListasPasadas"
                     app:layout_constraintEnd_toStartOf="@+id/imagenListasPasadas"
                     app:layout_constraintHorizontal_bias="0.273"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/imagenListasPasadas"
-                    app:layout_constraintVertical_bias="0.221"
-                    android:orientation="horizontal" />
+                    app:layout_constraintVertical_bias="0.221" />
 
                 <ImageView
                     android:id="@+id/imagenListasPasadas"
@@ -156,8 +108,8 @@
                 <TextView
                     android:id="@+id/textViewListasPasadas"
                     style="@style/texto_apartados"
-                    android:text="Listas Pasadas"
                     android:layout_marginLeft="13dp"
+                    android:text="Listas Pasadas"
                     app:layout_constraintBottom_toBottomOf="@+id/imagenListasPasadas"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"

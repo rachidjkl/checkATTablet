@@ -1,12 +1,9 @@
 package com.example.checkattablet.ApiAcces
 
 import Alumno
-import com.example.checkattablet.DataModel.Horario
-import com.example.checkattablet.DataModel.PasarLista
-import com.example.checkattablet.DataModel.PasarListaGrupo
-import com.example.checkattablet.DataModel.Profesor
 import Modulo
 import Uf
+import com.example.checkattablet.DataModel.*
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -19,6 +16,9 @@ interface ApiGets {
     {
         val BASE_URL = "http://abp-politecnics.com/2023/dam01/"
     }
+
+    @POST("api/Usuarios_CEP/email")
+    fun getUsuarioCep(@Body email: String): Call<UserCep>
 
     @GET("api/ClaseModulo/Modulo/idClase//{idClase}")
     fun getModulo(@Path("idClase") idClase: Int): Call<MutableList<Modulo>>
@@ -52,5 +52,8 @@ interface ApiGets {
     @POST("api/Pasar_Lista")
     fun InsertPasarLista(@Body pasarLista: List<PasarLista>): Call<Void>
 
+
+    @GET("api/Profesors/id_usuario_cep/{id_usuario_cep}")
+    fun getProfesorObject(@Path("id_usuario_cep") id_usuario_cep: Int): Call<List<Profe>>
 
 }
