@@ -122,6 +122,7 @@ class FragmentListasPasadas : Fragment() {
         refreshButton.setOnClickListener(){
 
             cargandoScreen.visibility = View.VISIBLE
+
             callApiUserCep(diaSemanaBusqueda)
             val updatedAdapter = ListasPasadasAdaptador(requireContext(), listaHorariosDiaClase, fecha)
             recyclerView.adapter = updatedAdapter
