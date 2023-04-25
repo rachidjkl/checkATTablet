@@ -178,6 +178,18 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/cargandoLayout3"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grisClaro"
+        android:gravity="center">
+        <TextView
+            style="@style/estiloTexto"
+            android:text="Cargando..."
+            android:textSize="50sp" />
+    </LinearLayout>
 
 
 </FrameLayout>

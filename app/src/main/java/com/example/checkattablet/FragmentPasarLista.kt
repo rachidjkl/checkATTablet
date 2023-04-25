@@ -4,6 +4,7 @@ import Alumno
 import Modulo
 import Uf
 import android.os.Bundle
+import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -158,6 +159,11 @@ class FragmentPasarLista : Fragment() {
         val pasarListaButton = view.findViewById<Button>(R.id.buttonValidarLista)
 
         pasarListaButton.setOnClickListener(){
+            //evitamos que pueda hacer doble click
+            pasarListaButton.isClickable = false
+            //ocultamos
+            ocultarCargandoScreen(view)
+
             var listaAlumnos = listaAlumno!!
 
 
@@ -169,7 +175,20 @@ class FragmentPasarLista : Fragment() {
             }
             insertPasarListaList(ListaPasadaAlumnos)
             //el profe tambien se tendra que actuaolizar
-            updateListaPasadaGrupoNoPasadaToPasada(horarioPasarLista!!.pasarListaGrupo.idListaGrupo!!,10006)  //profe prueba
+            updateListaPasadaGrupoNoPasadaToPasada(horarioPasarLista!!.pasarListaGrupo.idListaGrupo!!,Login.userProfe.idProfe)
+
+            pasarListaButton.isClickable = true
+
+            val fragmentoListasPasadas = FragmentListasPasadas()
+            val fragmentManager = requireActivity().supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+
+            // Agregar el fragmento actual a la pila de fragmentos
+            fragmentTransaction.addToBackStack(null)
+
+            // Reemplazar el fragmento actual con el FragmentListasPasadas2
+            fragmentTransaction.replace(R.id.fragmentooo, fragmentoListasPasadas)
+            fragmentTransaction.commit()
         }
 
 
@@ -286,6 +305,15 @@ class FragmentPasarLista : Fragment() {
 
         }
 
+    }
+
+    fun ocultarCargandoScreen(view: View) {
+        var cargandoScreen = view.findViewById<LinearLayout>(R.id.cargandoLayout3)
+        cargandoScreen.visibility = View.VISIBLE
+
+        Handler().postDelayed({
+            cargandoScreen.visibility = View.GONE
+        }, 2000) // 2000 milisegundos = 2 segundos
     }
 
 }
