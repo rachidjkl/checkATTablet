@@ -7,7 +7,7 @@
     android:background="@color/grisClaro"
     tools:context=".PasarLista.FragmentListasPasadas">
 
-    
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -117,5 +117,20 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <LinearLayout
+        android:id="@+id/cargandoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grisClaro"
+        android:gravity="center">
+
+        <TextView
+            style="@style/estiloTexto"
+            android:textSize="50sp"
+            android:text="Cargando..."/>
+
+    </LinearLayout>
 
 </FrameLayout>

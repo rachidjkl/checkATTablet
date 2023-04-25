@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -114,11 +115,19 @@ class FragmentListasPasadas : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
 
+        var cargandoScreen = view.findViewById<LinearLayout>(R.id.cargandoLayout)
+        cargandoScreen.visibility = View.GONE
+
+
         refreshButton.setOnClickListener(){
+
+            cargandoScreen.visibility = View.VISIBLE
             callApiUserCep(diaSemanaBusqueda)
             val updatedAdapter = ListasPasadasAdaptador(requireContext(), listaHorariosDiaClase, fecha)
             recyclerView.adapter = updatedAdapter
             updatedAdapter.notifyDataSetChanged()
+            cargandoScreen.visibility = View.GONE
+
             updatedAdapter.setOnClickListener {
 
                 var horarioPasarLista = listaHorariosDiaClase[recyclerView.getChildAdapterPosition(it)]
