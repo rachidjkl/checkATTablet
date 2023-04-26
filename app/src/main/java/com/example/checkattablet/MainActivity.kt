@@ -7,15 +7,37 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.checkattablet.DataModel.FechaSeleccionada
 import com.example.checkattablet.PasarLista.FragmentListasPasadas
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         var profeNombreLogIn = findViewById<TextView>(R.id.profeNombreLogIn)
         profeNombreLogIn.text = Login.userProfe.nombreProfe
+
+
+        //FECHA ACTUAL
+        val cal = Calendar.getInstance()
+        // Obtiene la fecha actual
+        val year = cal.get(Calendar.YEAR)
+        val month = cal.get(Calendar.MONTH)
+        val dayOfMonth = cal.get(Calendar.DAY_OF_MONTH)
+        // Crea un objeto Calendar para la fecha actual
+        val currentCalendar = Calendar.getInstance()
+        currentCalendar.set(year, month, dayOfMonth)
+        // Obtiene el nombre del día de la semana correspondiente a la fecha actual en español
+        var currentDayOfWeek = currentCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale("es", "ES"))
+        //asignamos una fecha para la consulta de la api
+        var fecha = String.format("%04d-%02d-%02d", year, month + 1,dayOfMonth)
+
+        var fechaActual= FechaSeleccionada(fecha,year,month,dayOfMonth,currentDayOfWeek)
+        FragmentListasPasadas.fecha = fechaActual
+
 
 
         var cargandoScreen = findViewById<LinearLayout>(R.id.cargandoLayout)

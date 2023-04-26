@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.checkattablet.*
 import com.example.checkattablet.ApiAcces.ApiGets
 import com.example.checkattablet.ApiAcces.RetrofitClient
+import com.example.checkattablet.DataModel.FechaSeleccionada
 import com.example.checkattablet.DataModel.Horario
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -32,7 +33,8 @@ class FragmentListasPasadas : Fragment() {
     companion object{
         lateinit var listaHorariosDiaClase: List<Horario>
         lateinit var  diaSemanaBusqueda: String
-        var fecha: String = ""
+        lateinit var fecha: FechaSeleccionada
+
     }
 
 
@@ -75,28 +77,18 @@ class FragmentListasPasadas : Fragment() {
         val refreshButton = view.findViewById<Button>(R.id.refresh)
         val datePickerButton = view.findViewById<Button>(R.id.date_picker_button)
         val fechaActual = view.findViewById<TextView>(R.id.fechaActual)
-        val cal = Calendar.getInstance()
 
 
-            // Obtiene la fecha actual
-            val year = cal.get(Calendar.YEAR)
-            val month = cal.get(Calendar.MONTH)
-            val dayOfMonth = cal.get(Calendar.DAY_OF_MONTH)
-
-            // Crea un objeto Calendar para la fecha actual
-            val currentCalendar = Calendar.getInstance()
-            currentCalendar.set(year, month, dayOfMonth)
-
-            // Obtiene el nombre del día de la semana correspondiente a la fecha actual en español
-            var currentDayOfWeek = currentCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale("es", "ES"))
 
 
-            datePickerButton.text = "${dayOfMonth}/${month + 1}/${year}"
-            fechaActual.text = "Fecha Actual ${dayOfMonth}/${month + 1}/${year} - $currentDayOfWeek"
 
-            if (fecha == ""){
-                fecha = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
-            }
+
+        datePickerButton.text = fecha.fecha
+        fechaActual.text = "Fecha Actual: ${fecha.fecha} - ${fecha.currentDayOfWeek}"
+
+
+
+
 
 
 
@@ -106,12 +98,12 @@ class FragmentListasPasadas : Fragment() {
         //DELETE THIS SHIT
         //fecha = "2023-04-17"
         //currentDayOfWeek = "lunes"
-        callApiUserCep(currentDayOfWeek)
+        callApiUserCep(fecha.currentDayOfWeek)
 
 
         var recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewListasPasadas)
 
-        var adapter = ListasPasadasAdaptador(requireContext(), listaHorariosDiaClase,fecha)
+        var adapter = ListasPasadasAdaptador(requireContext(), listaHorariosDiaClase, fecha.fecha)
         recyclerView.hasFixedSize()
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
@@ -123,8 +115,8 @@ class FragmentListasPasadas : Fragment() {
             //carga screen
             ocultarCargandoScreen(view)
 
-            callApiUserCep(diaSemanaBusqueda)
-            val updatedAdapter = ListasPasadasAdaptador(requireContext(), listaHorariosDiaClase, fecha)
+            callApiUserCep(fecha.currentDayOfWeek)
+            val updatedAdapter = ListasPasadasAdaptador(requireContext(), listaHorariosDiaClase, fecha.fecha)
             recyclerView.adapter = updatedAdapter
             updatedAdapter.notifyDataSetChanged()
 
@@ -134,7 +126,7 @@ class FragmentListasPasadas : Fragment() {
                 var horarioPasarLista = listaHorariosDiaClase[recyclerView.getChildAdapterPosition(it)]
                 val bundle = Bundle()
                 bundle.putSerializable("horarioPasarLista", horarioPasarLista)
-                bundle.putSerializable("fecha", fecha)
+                bundle.putSerializable("fecha", fecha.fecha)
 
                 val fragmentoPasarLista = FragmentPasarLista()
                 fragmentoPasarLista.arguments = bundle
@@ -155,7 +147,7 @@ class FragmentListasPasadas : Fragment() {
             var horarioPasarLista = listaHorariosDiaClase[recyclerView.getChildAdapterPosition(it)]
             val bundle = Bundle()
             bundle.putSerializable("horarioPasarLista", horarioPasarLista)
-            bundle.putSerializable("fecha", fecha)
+            bundle.putSerializable("fecha", fecha.fecha)
 
             val fragmentoPasarLista = FragmentPasarLista()
             fragmentoPasarLista.arguments = bundle
@@ -170,30 +162,28 @@ class FragmentListasPasadas : Fragment() {
             fragmentTransaction.commit()
         }
 
+
         datePickerButton.setOnClickListener {
 
             val datePicker = DatePickerDialog(
                 requireContext(),
                 { _, selectedYear, selectedMonth, selectedDayOfMonth ->
                     // Aquí se ejecutará el código cuando el usuario seleccione una fecha
-                    val selectedDate = "${selectedDayOfMonth}/${selectedMonth + 1}/${selectedYear}"
+                    fecha.fecha = "${selectedDayOfMonth}/${selectedMonth + 1}/${selectedYear}"
 
                     // Crea un objeto Calendar para la fecha seleccionada
                     val selectedCalendar = Calendar.getInstance()
                     selectedCalendar.set(selectedYear, selectedMonth, selectedDayOfMonth)
 
                     // Obtiene el nombre del día de la semana correspondiente a la fecha seleccionada
-                    val selectedDayOfWeek = selectedCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault())
+                    //fecha.currentDayOfWeek = selectedCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault())
+                    fecha.fecha = convertirFecha(fecha.fecha)
+                    fecha.currentDayOfWeek = obtenerDiaSemana(fecha.fecha)
 
-
-                    fechaActual.text = "Fecha Actual ${selectedDate} - ${selectedDayOfWeek}"
-                    datePickerButton.text = selectedDate
-
-                    fecha = convertirFecha(selectedDate)
-                    diaSemanaBusqueda = obtenerDiaSemana(fecha)
+                    fechaActual.text = "Fecha Actual ${fecha.fecha} - ${fecha.currentDayOfWeek}"
+                    datePickerButton.text = fecha.fecha
                 },
-                year, month, dayOfMonth
-
+                fecha.year, fecha.month, fecha.dayOfMonth
             )
             datePicker.show()
 
