@@ -78,26 +78,8 @@ class FragmentListasPasadas : Fragment() {
         val datePickerButton = view.findViewById<Button>(R.id.date_picker_button)
         val fechaActual = view.findViewById<TextView>(R.id.fechaActual)
 
-
-
-
-
-
         datePickerButton.text = fecha.fecha
         fechaActual.text = "Fecha Actual: ${fecha.fecha} - ${fecha.currentDayOfWeek}"
-
-
-
-
-
-
-
-
-
-
-        //DELETE THIS SHIT
-        //fecha = "2023-04-17"
-        //currentDayOfWeek = "lunes"
         callApiUserCep(fecha.currentDayOfWeek)
 
 
@@ -175,8 +157,7 @@ class FragmentListasPasadas : Fragment() {
                     val selectedCalendar = Calendar.getInstance()
                     selectedCalendar.set(selectedYear, selectedMonth, selectedDayOfMonth)
 
-                    // Obtiene el nombre del día de la semana correspondiente a la fecha seleccionada
-                    //fecha.currentDayOfWeek = selectedCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault())
+
                     fecha.fecha = convertirFecha(fecha.fecha)
                     fecha.currentDayOfWeek = obtenerDiaSemana(fecha.fecha)
 
